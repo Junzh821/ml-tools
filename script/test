@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+. script/env
+ARGS="${@:-tests/}"
+set -e
+PYTHONPATH="." pytest $ARGS
+# flake8 --max-line-length 50000 --ignore W503,F812 lab
+# PYTHONPATH="." pytest --cov lab
