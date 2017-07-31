@@ -21,3 +21,10 @@ services:
     ports:
       - "9003:9000"
     command: "tensorflow_model_server --port=9000 --model_name=resnet50 --model_base_path=/model"
+  xception_serving:
+    image: snormore/tensorflow-serving
+    volumes:
+      - .cache/models/tf/xception:/model/1
+    ports:
+      - "9004:9000"
+    command: "tensorflow_model_server --port=9000 --model_name=xception --model_base_path=/model"

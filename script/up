@@ -21,7 +21,7 @@ mkdir -p .cache/models
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_5_0_224_tf_no_top.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_7_5_224_tf_no_top.h5
   download https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
-  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.4/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
+  download https://github.com/fchollet/deep-learning-models/releases/download/v0.4/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5
 )

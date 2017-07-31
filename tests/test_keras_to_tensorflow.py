@@ -99,3 +99,33 @@ def test_convert_imagenet_resnet50():
     client = TFClient('localhost', '9003')
     data = open('tests/fixtures/files/cat.jpg', 'rb').read()
     assert client.make_prediction(data, timeout=10, name='resnet50')
+
+
+def test_convert_imagenet_xception():
+    model_path = '.cache/models/xception.h5'
+    tf_model_dir = '.cache/models/tf/xception'
+
+    if not os.path.exists(model_path):
+        target_size = (224, 224, 3)
+        weights_path = '.cache/weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
+        model = ResNet50(weights='imagenet', include_top=False, input_shape=target_size)
+        model.load_weights(weights_path)
+        model.save(model_path)
+
+    if os.path.exists(tf_model_dir):
+        shutil.rmtree(tf_model_dir)
+
+    KerasToTensorflow.convert(model_path, tf_model_dir)
+
+    assert os.path.exists(tf_model_dir)
+    assert os.path.exists(tf_model_dir + '/variables')
+    assert os.path.exists(tf_model_dir + '/variables/variables.data-00000-of-00001')
+    assert os.path.exists(tf_model_dir + '/variables/variables.index')
+    assert os.path.exists(tf_model_dir + '/saved_model.pb')
+
+    call(['docker-compose', 'restart', 'resnet50_serving'])
+    time.sleep(3)
+
+    client = TFClient('localhost', '9004')
+    data = open('tests/fixtures/files/cat.jpg', 'rb').read()
+    assert client.make_prediction(data, timeout=10, name='xception')
