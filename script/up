@@ -15,13 +15,17 @@ mkdir -p .cache/weights
 mkdir -p .cache/models
 (
   cd .cache/weights
-  download https://github.com/fchollet/deep-learning-models/releases/download/v0.5/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
-  download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_1_0_224_tf_no_top.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/mobilenet_1_0_224_tf_no_top.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.5/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_1_0_224_tf_no_top.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_2_5_224_tf_no_top.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_5_0_224_tf_no_top.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_7_5_224_tf_no_top.h5
-  download https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
-  download https://github.com/fchollet/deep-learning-models/releases/download/v0.4/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.4/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
   # download https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5
 )

@@ -107,7 +107,7 @@ def test_convert_imagenet_xception():
 
     if not os.path.exists(model_path):
         target_size = (224, 224, 3)
-        weights_path = '.cache/weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
+        weights_path = '.cache/weights/xception_weights_tf_dim_ordering_tf_kernels_notop.h5'
         model = ResNet50(weights='imagenet', include_top=False, input_shape=target_size)
         model.load_weights(weights_path)
         model.save(model_path)
