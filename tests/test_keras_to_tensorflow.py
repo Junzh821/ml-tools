@@ -1,12 +1,8 @@
-import pytest
 import os
 import shutil
 import time
 
 from subprocess import call
-from urllib.request import urlopen
-from urllib.error import URLError
-from http.client import RemoteDisconnected
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.mobilenet import MobileNet
 from keras.applications.resnet50 import ResNet50
@@ -50,7 +46,7 @@ def test_convert_imagenet_mobilenet():
     tf_model_dir = '.cache/models/tf/mobilenet'
 
     if not os.path.exists(model_path):
-        target_size = (224, 224,3)
+        target_size = (224, 224, 3)
         weights_path = '.cache/weights/mobilenet_1_0_224_tf_no_top.h5'
         model = MobileNet(weights='imagenet', include_top=False, input_shape=target_size)
         model.load_weights(weights_path)
@@ -80,7 +76,7 @@ def test_convert_imagenet_resnet50():
     tf_model_dir = '.cache/models/tf/resnet50'
 
     if not os.path.exists(model_path):
-        target_size = (224, 224,3)
+        target_size = (224, 224, 3)
         weights_path = '.cache/weights/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
         model = ResNet50(weights='imagenet', include_top=False, input_shape=target_size)
         model.load_weights(weights_path)
