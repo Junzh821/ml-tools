@@ -37,9 +37,7 @@ if [ ! -d .cache/tensorflow-serving-python ]; then
     cd tensorflow-serving-python
     pip install -r requirements.txt
     python setup.py install
-    if [ -z $CI ]; then
-      python setup.py install # needs to run twice sometimes to generate the proto files
-    fi
+    python setup.py install # needs to run twice sometimes to generate the proto files
   )
 fi
 
