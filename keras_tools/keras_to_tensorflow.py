@@ -1,4 +1,3 @@
-import os
 import keras
 import tensorflow
 
