@@ -11,8 +11,9 @@ experimental:
     branches:
       only:
         - master
-test:
-  pre:
+dependencies:
+  override:
     - script/up
+test:
   override:
     - script/test
