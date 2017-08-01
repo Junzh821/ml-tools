@@ -6,6 +6,7 @@ from subprocess import call
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.mobilenet import MobileNet
 from keras.applications.resnet50 import ResNet50
+from keras.applications.xception import Xception
 from tensorflow_serving_python.client import TFClient
 
 from keras_tools.keras_to_tensorflow import KerasToTensorflow
@@ -106,9 +107,9 @@ def test_convert_imagenet_xception():
     tf_model_dir = '.cache/models/tf/xception'
 
     if not os.path.exists(model_path):
-        target_size = (224, 224, 3)
+        target_size = (299, 299, 3)
         weights_path = '.cache/weights/xception_weights_tf_dim_ordering_tf_kernels_notop.h5'
-        model = ResNet50(weights='imagenet', include_top=False, input_shape=target_size)
+        model = Xception(weights='imagenet', include_top=False, input_shape=target_size)
         model.load_weights(weights_path)
         model.save(model_path)
 
@@ -123,7 +124,7 @@ def test_convert_imagenet_xception():
     assert os.path.exists(tf_model_dir + '/variables/variables.index')
     assert os.path.exists(tf_model_dir + '/saved_model.pb')
 
-    call(['docker-compose', 'restart', 'resnet50_serving'])
+    call(['docker-compose', 'restart', 'xception_serving'])
     time.sleep(3)
 
     client = TFClient('localhost', '9004')
