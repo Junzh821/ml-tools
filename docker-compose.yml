@@ -1,9 +1,9 @@
-version: '3'
+version: '2'
 services:
   inception_serving:
     image: snormore/tensorflow-serving
     volumes:
-      - .cache/models/tf/inception_v3:/model/1
+      - .cache/models/tf/inception:/model/1
     ports:
       - "9001:9000"
     command: "tensorflow_model_server --port=9000 --model_name=inception --model_base_path=/model"
