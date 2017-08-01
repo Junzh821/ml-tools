@@ -16,6 +16,7 @@ setup(
         'tensorflow',
         'keras',
         'h5py',
-        'pillow'
+        'pillow',
+        'coremltools'
     ]
 )
