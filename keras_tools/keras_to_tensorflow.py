@@ -22,7 +22,7 @@ class KerasToTensorflow(object):
         builder = tensorflow.saved_model.builder.SavedModelBuilder(output_dir)
         signature = tensorflow.saved_model.signature_def_utils.predict_signature_def(
             inputs={
-                'images': model.input
+                'image': model.input
             },
             outputs={
                 'class_probabilities': model.output
