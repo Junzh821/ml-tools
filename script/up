@@ -33,7 +33,7 @@ mkdir -p .cache/models
 if [ ! -d .cache/tensorflow-serving-python ]; then
   (
     cd .cache
-    git clone https://github.com/snormore/tensorflow-serving-python.git
+    git clone https://github.com/triagemd/tensorflow-serving-python.git
     cd tensorflow-serving-python
     pip install -r requirements.txt
     sleep 1

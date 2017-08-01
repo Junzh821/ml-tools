@@ -16,5 +16,6 @@ setup(
         'tensorflow',
         'keras',
         'h5py',
+        'pillow'
     ]
 )
