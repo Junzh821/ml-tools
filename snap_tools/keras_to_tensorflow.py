@@ -4,20 +4,33 @@ import tensorflow
 
 class KerasToTensorflow(object):
 
-    @classmethod
-    def convert(cls, model_path, output_dir):
-        keras.backend.clear_session()
-        session = tensorflow.Session()
-        keras.backend.set_session(session)
-
-        # Disable loading of learning nodes
-        keras.backend.set_learning_phase(0)
-
-        model = keras.models.load_model(model_path, custom_objects={
+    @staticmethod
+    def load_keras_model(model_path):
+        return keras.models.load_model(model_path, custom_objects={
             # for mobilenet import, doesn't affect other model types
             'relu6': keras.applications.mobilenet.relu6,
             'DepthwiseConv2D': keras.applications.mobilenet.DepthwiseConv2D
         })
+
+    @staticmethod
+    def convert(model_path, output_dir, output_stripped_model_path=None):
+        # cut out to_multi_gpu stuff (this could possibly break some models which don't use to_multi_gpu)
+        model = KerasToTensorflow.load_keras_model(model_path)
+        stripped_model = next((l for l in model.layers if isinstance(l, keras.engine.training.Model)), None)
+        if stripped_model:
+            if output_stripped_model_path is None:
+                output_stripped_model_path = model_path + '-stripped.hdf5'
+            stripped_model.save(output_stripped_model_path)
+            model_path = output_stripped_model_path
+
+        keras.backend.clear_session()
+        session = tensorflow.Session()
+        keras.backend.set_session(session)
+
+        # disable loading of learning nodes
+        keras.backend.set_learning_phase(0)
+
+        model = KerasToTensorflow.load_keras_model(model_path)
 
         builder = tensorflow.saved_model.builder.SavedModelBuilder(output_dir)
         signature = tensorflow.saved_model.signature_def_utils.predict_signature_def(
