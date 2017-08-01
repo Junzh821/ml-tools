@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -e
+. script/env
+pip install .
+pip install pytest pytest-cov flake8 autoflake pep8
+
+# Download some models for the tests
+function download {
+  URL=$1
+  if [ ! -f $(basename $URL) ]; then
+    wget $URL
+  fi
+}
+mkdir -p .cache/weights
+mkdir -p .cache/models/tf/{inception,mobilenet,resnet50,xception}
+(
+  cd .cache/weights
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/mobilenet_1_0_224_tf_no_top.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+  download https://storage.googleapis.com/triage-lab/drops/keras-models/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.5/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_1_0_224_tf_no_top.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_2_5_224_tf_no_top.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_5_0_224_tf_no_top.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.6/mobilenet_7_5_224_tf_no_top.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.4/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
+  # download https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5
+)
+
+if [ ! -d .cache/tensorflow-serving-python ]; then
+  (
+    cd .cache
+    git clone https://github.com/triagemd/tensorflow-serving-python.git
+    cd tensorflow-serving-python
+    pip install -r requirements.txt
+    sleep 1
+    python setup.py install
+    sleep 1
+    python setup.py install # needs to run twice sometimes to generate the proto files
+  )
+fi
+
+docker-compose up -d
