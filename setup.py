@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='keras-tools',
+    name='snap-tools',
     version='0.0.1',
     description='Tools for converting Keras models to other specs.',
     author='Triage Technologies',
