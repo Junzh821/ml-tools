@@ -17,6 +17,6 @@ setup(
         'keras',
         'h5py',
         'pillow',
-        'coremltools'
+        #'coremltools' <- NOTE!: coremltools is currently Python 2.7 only
     ]
 )

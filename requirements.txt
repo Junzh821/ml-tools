@@ -1,0 +1,7 @@
+-e .
+
+pytest
+pytest-cov
+flake8
+autoflake
+pep8

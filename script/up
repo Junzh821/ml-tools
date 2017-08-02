@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -e
 . script/env
-pip install .
-pip install pytest pytest-cov flake8 autoflake pep8
+pip install -r requirements.txt
 
 # Download some models for the tests
 function download {
