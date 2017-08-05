@@ -2,7 +2,6 @@
 set -e
 . script/env
 pip install --upgrade pip
-pip install grpcio grpcio-tools
 pip install -r requirements.txt
 
 # Download some models for the tests
