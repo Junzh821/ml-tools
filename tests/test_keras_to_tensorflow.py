@@ -9,7 +9,7 @@ from keras.applications.mobilenet import MobileNet
 from keras.applications.resnet50 import ResNet50
 from keras.applications.xception import Xception
 from keras.preprocessing import image
-from tensorflow_serving_python.client import TFClient
+from tensorflow_serving_client import TensorflowServingClient
 from grpc.framework.interfaces.face.face import AbortionError
 
 from snap_tools.keras_to_tensorflow import KerasToTensorflow
@@ -77,9 +77,13 @@ def assert_model_serving(model_name):
     attempt = 1
     while True:
         try:
-            client = TFClient('localhost', str(MODELS[model_name]['port']))
-            img = load_image('tests/fixtures/files/cat.jpg', MODELS[model_name]['size'])
-            result = client.make_prediction(img, 'image', timeout=10, name=model_name)
+            client = TensorflowServingClient(
+                'localhost',
+                MODELS[model_name]['port'],
+                model_name,
+                MODELS[model_name]['size']
+            )
+            result = client.classify_image('tests/fixtures/files/cat.jpg')
             assert result
             assert 1 == len(result['class_probabilities'])
             # assert 7 == len(result['class_probabilities'][0])
