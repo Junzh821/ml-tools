@@ -4,9 +4,9 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='snap-tools',
+    name='ml-tools',
     version='0.0.1',
-    description='Tools for converting Keras models to other specs.',
+    description='Tools for common machine learning tasks using Tensorflow and Keras.',
     author='Triage Technologies',
     author_email='ai@triage.com',
     url='https://www.triage.com/',
