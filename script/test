@@ -3,5 +3,5 @@
 ARGS="${@:-tests/}"
 set -e
 PYTHONPATH="." pytest $ARGS
-flake8 --max-line-length 50000 snap_tools
+flake8 --max-line-length 50000 ml_tools
 # PYTHONPATH="." pytest --cov $ARGS
