@@ -12,7 +12,7 @@ from keras.preprocessing import image
 from tensorflow_serving_client import TensorflowServingClient
 from grpc.framework.interfaces.face.face import AbortionError
 
-from snap_tools.keras_to_tensorflow import KerasToTensorflow
+from ml_tools.keras_to_tensorflow import KerasToTensorflow
 
 
 MODELS = {
