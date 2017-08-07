@@ -25,12 +25,16 @@ def setup_model(name, model_path):
 
     model_spec = get_model_spec(name)
     model = model_spec.klass(weights='imagenet', input_shape=model_spec.target_size)
-    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    model_dir = os.path.dirname(model_path)
+    if not os.path.exists(model_dir):
+        os.makedirs(model_dir)
     model.save(model_path)
 
     if os.path.exists(tf_model_dir):
         shutil.rmtree(tf_model_dir)
-    os.makedirs(os.path.dirname(tf_model_dir), exist_ok=True)
+    tf_model_dir_dir = os.path.dirname(tf_model_dir)
+    if not os.path.exists(tf_model_dir_dir):
+        os.makedirs(tf_model_dir_dir)
 
     return tf_model_dir
 

@@ -8,3 +8,4 @@ flake8
 autoflake
 pep8
 requests
+backports.tempfile
