@@ -1,30 +1,38 @@
-version: '2'
+version: '3'
 services:
-  inception_serving:
-    image: snormore/tensorflow-serving
+  inception:
+    image: snormore/tensorflow-serving-base
     volumes:
-      - .cache/models/tf/inception:/model/1
+      - .cache/models/inception:/model/1
     ports:
       - "9001:9000"
-    command: "tensorflow_model_server --port=9000 --model_name=inception --model_base_path=/model"
-  mobilenet_serving:
-    image: snormore/tensorflow-serving
+  mobilenet:
+    image: snormore/tensorflow-serving-base
     volumes:
-      - .cache/models/tf/mobilenet:/model/1
+      - .cache/models/mobilenet:/model/1
     ports:
       - "9002:9000"
-    command: "tensorflow_model_server --port=9000 --model_name=mobilenet --model_base_path=/model"
-  resnet50_serving:
-    image: snormore/tensorflow-serving
+  resnet50:
+    image: snormore/tensorflow-serving-base
     volumes:
-      - .cache/models/tf/resnet50:/model/1
+      - .cache/models/resnet50:/model/1
     ports:
       - "9003:9000"
-    command: "tensorflow_model_server --port=9000 --model_name=resnet50 --model_base_path=/model"
-  xception_serving:
-    image: snormore/tensorflow-serving
+  xception:
+    image: snormore/tensorflow-serving-base
     volumes:
-      - .cache/models/tf/xception:/model/1
+      - .cache/models/xception:/model/1
     ports:
       - "9004:9000"
-    command: "tensorflow_model_server --port=9000 --model_name=xception --model_base_path=/model"
+  vgg16:
+    image: snormore/tensorflow-serving-base
+    volumes:
+      - .cache/models/vgg16:/model/1
+    ports:
+      - "9005:9000"
+  vgg19:
+    image: snormore/tensorflow-serving-base
+    volumes:
+      - .cache/models/vgg19:/model/1
+    ports:
+      - "9006:9000"

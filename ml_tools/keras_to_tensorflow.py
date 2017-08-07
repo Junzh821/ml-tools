@@ -1,3 +1,4 @@
+import os
 import keras
 import tensorflow
 
@@ -19,7 +20,7 @@ class KerasToTensorflow(object):
         stripped_model = next((l for l in model.layers if isinstance(l, keras.engine.training.Model)), None)
         if stripped_model:
             if output_stripped_model_path is None:
-                output_stripped_model_path = model_path + '-stripped.hdf5'
+                output_stripped_model_path = '%s-stripped%s' % os.path.splitext(model_path)
             stripped_model.save(output_stripped_model_path)
             model_path = output_stripped_model_path
 
@@ -55,6 +56,6 @@ class KerasToTensorflow(object):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) != 3 or not (sys.argv[1].endswith('.h5') or sys.argv[1].endswith('.hdf5')):
-        print('usage: keras_to_tensorflow.py <hdf5_model_file> <output_dir>')
+        print('Usage: keras_to_tensorflow.py <hdf5_model_file> <output_dir>')
         sys.exit(1)
     KerasToTensorflow.convert(sys.argv[1], sys.argv[2])

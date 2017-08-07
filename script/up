@@ -3,22 +3,4 @@ set -e
 . script/env
 pip install --upgrade pip
 pip install -r requirements.txt
-
-# Download some models for the tests
-function download {
-  URL=$1
-  if [ ! -f $(basename $URL) ]; then
-    wget $URL
-  fi
-}
-mkdir -p .cache/weights
-mkdir -p .cache/models/tf/{inception,mobilenet,resnet50,xception}
-(
-  cd .cache/weights
-  download https://storage.googleapis.com/triage-lab/drops/keras-models/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
-  download https://storage.googleapis.com/triage-lab/drops/keras-models/mobilenet_1_0_224_tf_no_top.h5
-  download https://storage.googleapis.com/triage-lab/drops/keras-models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
-  download https://storage.googleapis.com/triage-lab/drops/keras-models/xception_weights_tf_dim_ordering_tf_kernels_notop.h5
-)
-
 docker-compose up -d
