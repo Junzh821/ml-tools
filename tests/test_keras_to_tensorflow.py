@@ -8,8 +8,7 @@ from subprocess import call
 from tensorflow_serving_client import TensorflowServingClient
 from grpc.framework.interfaces.face.face import AbortionError
 
-from ml_tools.keras_to_tensorflow import KerasToTensorflow
-from ml_tools.utils import MODEL_SPECS, load_image
+from ml_tools import KerasToTensorflow, load_image, get_model_spec
 
 
 RUN_VGG_TESTS = os.environ.get('RUN_VGG_TESTS', False)
@@ -28,8 +27,8 @@ MODEL_SERVING_PORTS = {
 def setup_model(name, model_path):
     tf_model_dir = '.cache/models/%s' % (name, )
 
-    model_class = MODEL_SPECS[name]['class']
-    model = model_class(weights='imagenet', input_shape=MODEL_SPECS[name]['target_size'])
+    model_spec = get_model_spec(name)
+    model = model_spec.klass(weights='imagenet', input_shape=model_spec.target_size)
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     model.save(model_path)
 
@@ -55,13 +54,13 @@ def assert_converted_model(tf_model_dir):
 
 
 def assert_model_serving(model_name, imagenet_dictionary, expected_top_5):
-    model_spec = MODEL_SPECS[model_name]
+    model_spec = get_model_spec(model_name)
     attempt = 1
     while True:
         try:
             client = TensorflowServingClient('localhost', MODEL_SERVING_PORTS[model_name])
-            image_data = load_image('tests/fixtures/files/cat.jpg', model_spec['target_size'],
-                                    preprocess_input=model_spec['preprocess_input'])
+            image_data = load_image('tests/fixtures/files/cat.jpg', model_spec.target_size,
+                                    preprocess_input=model_spec.preprocess_input)
             result = client.make_prediction(image_data, 'image')
             assert 'class_probabilities' in result
             assert len(result['class_probabilities']) == 1
