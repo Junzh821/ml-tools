@@ -8,7 +8,7 @@ from subprocess import call
 from tensorflow_serving_client import TensorflowServingClient
 from grpc.framework.interfaces.face.face import AbortionError
 
-from ml_tools import KerasToTensorflow, load_image, model_spec
+from ml_tools import KerasToTensorflow, load_image, get_model_spec
 
 
 RUN_VGG_TESTS = os.environ.get('RUN_VGG_TESTS', False)
@@ -28,8 +28,7 @@ def setup_model(name, model_path):
     tf_model_dir = '.cache/models/%s' % (name, )
 
     model_spec = get_model_spec(name)
-    model_class = ['class']
-    model = model_class(weights='imagenet', input_shape=model_spec.target_size)
+    model = model_spec.klass(weights='imagenet', input_shape=model_spec.target_size)
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     model.save(model_path)
 
