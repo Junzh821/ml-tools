@@ -1,26 +1,27 @@
 import pytest
 import csv
-import tempfile
 import codecs
+import requests
 
-from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
+from backports.tempfile import TemporaryDirectory
 
 
 @pytest.fixture(scope='function')
 def temp_dir():
-    with tempfile.TemporaryDirectory() as d:
+    with TemporaryDirectory() as d:
         yield d
 
 
 @pytest.fixture(scope='function')
 def temp_file():
-    with tempfile.NamedTemporaryFile() as f:
+    with NamedTemporaryFile() as f:
         yield f.name
 
 
 @pytest.fixture
 def imagenet_dictionary():
-    response = urlopen('https://storage.googleapis.com/tf-serving-docker-http-eae9e0c7-661d-4cca-836a-0433a8da44ba/imagenet/dictionary.csv')
-    reader = csv.reader(codecs.iterdecode(response, 'utf-8'))
+    response = requests.get('https://s3.amazonaws.com/tf-models-839c7ddd-9cab-49fa-9b42-bde1a842086e/dictionary.csv')
+    reader = csv.reader(response.text.decode('utf-8').splitlines())
     dictionary = dict(list(reader))
     return [dictionary[key] for key in sorted(dictionary)]

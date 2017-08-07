@@ -24,15 +24,15 @@ services:
       - .cache/models/xception:/model/1
     ports:
       - "9004:9000"
-  # vgg16:
-  #   image: triage/tensorflow-serving-base:1
-  #   volumes:
-  #     - .cache/models/vgg16:/model/1
-  #   ports:
-  #     - "9005:9000"
-  # vgg19:
-  #   image: triage/tensorflow-serving-base:1
-  #   volumes:
-  #     - .cache/models/vgg19:/model/1
-  #   ports:
-  #     - "9006:9000"
+  vgg16:
+    image: triage/tensorflow-serving-base:1
+    volumes:
+      - .cache/models/vgg16:/model/1
+    ports:
+      - "9005:9000"
+  vgg19:
+    image: triage/tensorflow-serving-base:1
+    volumes:
+      - .cache/models/vgg19:/model/1
+    ports:
+      - "9006:9000"
