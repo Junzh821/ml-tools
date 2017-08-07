@@ -6,7 +6,7 @@ Tools for common machine learning tasks using Tensorflow and Keras.
 
 ## Mac
 
- - Install Python 3
+ - Install Python 2
  - Install Docker for Mac
  - `script/up`
 
