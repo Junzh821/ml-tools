@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   inception_v3:
     image: snormore/tensorflow-serving-base
