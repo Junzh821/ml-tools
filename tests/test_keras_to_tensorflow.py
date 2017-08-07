@@ -1,3 +1,4 @@
+import pytest
 import os
 import time
 import shutil
@@ -8,6 +9,9 @@ from tensorflow_serving_client import TensorflowServingClient
 from grpc.framework.interfaces.face.face import AbortionError
 
 from ml_tools import KerasToTensorflow, load_image, get_model_spec
+
+
+RUN_VGG_TESTS = os.environ.get('RUN_VGG_TESTS', False)
 
 
 MODEL_SERVING_PORTS = {
@@ -134,6 +138,7 @@ def test_convert_imagenet_xception(temp_file, imagenet_dictionary):
     ])
 
 
+@pytest.mark.skipif(not RUN_VGG_TESTS, reason='these 500M models are too much for CI')
 def test_convert_imagenet_vgg16(temp_file, imagenet_dictionary):
     model_name = 'vgg16'
     tf_model_dir = setup_model(model_name, temp_file)
@@ -149,6 +154,7 @@ def test_convert_imagenet_vgg16(temp_file, imagenet_dictionary):
     ])
 
 
+@pytest.mark.skipif(not RUN_VGG_TESTS, reason='these 500M models are too much for CI')
 def test_convert_imagenet_vgg19(temp_file, imagenet_dictionary):
     model_name = 'vgg19'
     tf_model_dir = setup_model(model_name, temp_file)
