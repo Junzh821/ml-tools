@@ -21,7 +21,7 @@ def temp_file():
 
 @pytest.fixture
 def imagenet_dictionary():
-    response = requests.get('https://storage.googleapis.com/tf-serving-docker-http-eae9e0c7-661d-4cca-836a-0433a8da44ba/imagenet/dictionary.csv')
+    response = requests.get('https://s3.amazonaws.com/tf-models-839c7ddd-9cab-49fa-9b42-bde1a842086e/dictionary.csv')
     reader = csv.reader(response.text.decode('utf-8').splitlines())
     dictionary = dict(list(reader))
     return [dictionary[key] for key in sorted(dictionary)]
