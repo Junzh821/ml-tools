@@ -1,3 +1,4 @@
+import os
 import numpy as np
 
 from keras.preprocessing.image import load_img
@@ -10,3 +11,11 @@ def load_image(image_path, target_size=None, preprocess_input=None):
     if preprocess_input:
         image_data = preprocess_input(image_data)
     return image_data
+
+
+def list_files(path):
+    matches = []
+    for root, dirnames, filenames in os.walk(path):
+        for filename in filenames:
+            matches.append(os.path.join(root, filename))
+    return matches
