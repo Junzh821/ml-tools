@@ -38,8 +38,9 @@ def setup_model(name, model_path):
 
 
 def restart_serving_container(model_name):
-    time.sleep(1)
+    time.sleep(2)
     call(['docker-compose', 'restart', model_name])
+    time.sleep(2)
 
 
 def assert_converted_model(tf_model_dir):
@@ -50,7 +51,7 @@ def assert_converted_model(tf_model_dir):
     assert os.path.exists(tf_model_dir + '/saved_model.pb')
 
 
-def assert_model_serving(model_name, imagenet_dictionary):
+def assert_model_serving(model_name, imagenet_dictionary, expected_top_5):
     model_spec = MODEL_SPECS[model_name]
     attempt = 1
     while True:
@@ -66,14 +67,7 @@ def assert_model_serving(model_name, imagenet_dictionary):
             predictions = list(zip(imagenet_dictionary, predictions))
             predictions = sorted(predictions, reverse=True, key=lambda kv: kv[1])[:5]
             predictions = [(label, float(score)) for label, score in predictions]
-            expected = [
-                ('impala, Aepyceros melampus', 0.334694504737854),
-                ('llama', 0.2851393222808838),
-                ('hartebeest', 0.15471667051315308),
-                ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
-                ('mink', 0.030886519700288773),
-            ]
-            assert predictions == expected
+            assert predictions == expected_top_5
             break
         except AbortionError as e:
             if e.details != 'Endpoint read failed' or attempt > 5:
@@ -88,7 +82,13 @@ def test_convert_imagenet_inception_v3(temp_file, imagenet_dictionary):
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
-    assert_model_serving(model_name, imagenet_dictionary)
+    assert_model_serving(model_name, imagenet_dictionary, [
+        ('impala, Aepyceros melampus', 0.4716886878013611),
+        ('llama', 0.127954363822937),
+        ('fox squirrel, eastern fox squirrel, Sciurus niger', 0.07338221371173859),
+        ('hartebeest', 0.052391838282346725),
+        ('marmot', 0.008323794230818748),
+    ])
 
 
 def test_convert_imagenet_mobilenet(temp_file, imagenet_dictionary):
@@ -97,7 +97,13 @@ def test_convert_imagenet_mobilenet(temp_file, imagenet_dictionary):
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
-    assert_model_serving(model_name, imagenet_dictionary)
+    assert_model_serving(model_name, imagenet_dictionary, [
+        ('impala, Aepyceros melampus', 0.334694504737854),
+        ('llama', 0.2851393222808838),
+        ('hartebeest', 0.15471667051315308),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
+        ('mink', 0.030886519700288773),
+    ])
 
 
 def test_convert_imagenet_resnet50(temp_file, imagenet_dictionary):
@@ -106,7 +112,13 @@ def test_convert_imagenet_resnet50(temp_file, imagenet_dictionary):
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
-    assert_model_serving(model_name, imagenet_dictionary)
+    assert_model_serving(model_name, imagenet_dictionary, [
+        ('impala, Aepyceros melampus', 0.334694504737854),
+        ('llama', 0.2851393222808838),
+        ('hartebeest', 0.15471667051315308),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
+        ('mink', 0.030886519700288773),
+    ])
 
 
 def test_convert_imagenet_xception(temp_file, imagenet_dictionary):
@@ -115,7 +127,13 @@ def test_convert_imagenet_xception(temp_file, imagenet_dictionary):
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
-    assert_model_serving(model_name, imagenet_dictionary)
+    assert_model_serving(model_name, imagenet_dictionary, [
+        ('ram, tup', 0.10058529675006866),
+        ('Band Aid', 0.09152575582265854),
+        ('fox squirrel, eastern fox squirrel, Sciurus niger', 0.07581676542758942),
+        ('impala, Aepyceros melampus', 0.0746716633439064),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.06751589477062225),
+    ])
 
 
 def test_convert_imagenet_vgg16(temp_file, imagenet_dictionary):
@@ -124,7 +142,13 @@ def test_convert_imagenet_vgg16(temp_file, imagenet_dictionary):
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
-    assert_model_serving(model_name, imagenet_dictionary)
+    assert_model_serving(model_name, imagenet_dictionary, [
+        ('impala, Aepyceros melampus', 0.334694504737854),
+        ('llama', 0.2851393222808838),
+        ('hartebeest', 0.15471667051315308),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
+        ('mink', 0.030886519700288773),
+    ])
 
 
 def test_convert_imagenet_vgg19(temp_file, imagenet_dictionary):
@@ -133,4 +157,10 @@ def test_convert_imagenet_vgg19(temp_file, imagenet_dictionary):
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
-    assert_model_serving(model_name, imagenet_dictionary)
+    assert_model_serving(model_name, imagenet_dictionary, [
+        ('impala, Aepyceros melampus', 0.334694504737854),
+        ('llama', 0.2851393222808838),
+        ('hartebeest', 0.15471667051315308),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
+        ('mink', 0.030886519700288773),
+    ])
