@@ -53,7 +53,7 @@ def load_image(image_path, target_size=None, preprocess_input=None):
         if img.size != width_height:
             img = img.resize(width_height)
     image_data = np.asarray(img, dtype=np.float32)
+    image_data = np.expand_dims(image_data, axis=0)
     if preprocess_input:
         image_data = preprocess_input(image_data)
-    image_data = np.expand_dims(image_data, axis=0)
     return image_data
