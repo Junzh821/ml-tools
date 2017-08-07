@@ -112,11 +112,11 @@ def test_convert_imagenet_resnet50(temp_file, imagenet_dictionary):
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
     assert_model_serving(model_name, imagenet_dictionary, [
-        ('impala, Aepyceros melampus', 0.334694504737854),
-        ('llama', 0.2851393222808838),
-        ('hartebeest', 0.15471667051315308),
-        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
-        ('mink', 0.030886519700288773),
+        ('ram, tup', 0.3193315863609314),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.19359852373600006),
+        ('Band Aid', 0.14291106164455414),
+        ('fox squirrel, eastern fox squirrel, Sciurus niger', 0.1395975947380066),
+        ('mink', 0.04618712514638901),
     ])
 
 
@@ -142,11 +142,11 @@ def test_convert_imagenet_vgg16(temp_file, imagenet_dictionary):
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
     assert_model_serving(model_name, imagenet_dictionary, [
-        ('impala, Aepyceros melampus', 0.334694504737854),
-        ('llama', 0.2851393222808838),
-        ('hartebeest', 0.15471667051315308),
-        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
-        ('mink', 0.030886519700288773),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.3090206980705261),
+        ('ram, tup', 0.21598483622074127),
+        ('llama', 0.1327403038740158),
+        ('impala, Aepyceros melampus', 0.11005250364542007),
+        ('hartebeest', 0.08285804092884064),
     ])
 
 
@@ -157,9 +157,9 @@ def test_convert_imagenet_vgg19(temp_file, imagenet_dictionary):
     assert_converted_model(tf_model_dir)
     restart_serving_container(model_name)
     assert_model_serving(model_name, imagenet_dictionary, [
-        ('impala, Aepyceros melampus', 0.334694504737854),
-        ('llama', 0.2851393222808838),
-        ('hartebeest', 0.15471667051315308),
-        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
-        ('mink', 0.030886519700288773),
+        ('ram, tup', 0.3812929391860962),
+        ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.27262774109840393),
+        ('impala, Aepyceros melampus', 0.08553500473499298),
+        ('mink', 0.05379556491971016),
+        ('llama', 0.047869954258203506),
     ])
