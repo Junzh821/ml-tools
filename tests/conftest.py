@@ -14,8 +14,8 @@ def temp_dir():
 
 @pytest.fixture(scope='function')
 def temp_file():
-  with tempfile.NamedTemporaryFile() as f:
-    yield f.name
+    with tempfile.NamedTemporaryFile() as f:
+        yield f.name
 
 
 @pytest.fixture

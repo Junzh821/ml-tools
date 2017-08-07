@@ -1,4 +1,3 @@
-import pytest
 import os
 import time
 import shutil
@@ -58,7 +57,7 @@ def assert_model_serving(model_name, imagenet_dictionary, expected_top_5):
         try:
             client = TensorflowServingClient('localhost', MODEL_SERVING_PORTS[model_name])
             image_data = load_image('tests/fixtures/files/cat.jpg', model_spec['target_size'],
-                preprocess_input=model_spec['preprocess_input'])
+                                    preprocess_input=model_spec['preprocess_input'])
             result = client.make_prediction(image_data, 'image')
             assert 'class_probabilities' in result
             assert len(result['class_probabilities']) == 1
