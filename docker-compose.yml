@@ -3,13 +3,13 @@ services:
   inception_v3:
     image: triage/tensorflow-serving-base:1
     volumes:
-      - .cache/models/inception:/model/1
+      - .cache/models/inception_v3:/model/1
     ports:
       - "9001:9000"
   mobilenet_v1:
     image: triage/tensorflow-serving-base:1
     volumes:
-      - .cache/models/mobilenet:/model/1
+      - .cache/models/mobilenet_v1:/model/1
     ports:
       - "9002:9000"
   resnet50:
