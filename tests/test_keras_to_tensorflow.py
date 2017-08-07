@@ -56,21 +56,24 @@ def assert_model_serving(model_name, imagenet_dictionary):
     while True:
         try:
             client = TensorflowServingClient('localhost', MODEL_SERVING_PORTS[model_name])
-            image_data = load_image('tests/fixtures/files/cat.jpg', model_spec['target_size'])
-            response = client.make_prediction(image_data, 'image')
-            assert response is not None
-            assert len(response['class_probabilities']) == 1
-            assert len(response['class_probabilities'][0]) == 1000
-            predictions = dict(zip(imagenet_dictionary, response['class_probabilities'][0]))
-            top_5 = sorted(predictions.items(), reverse=True, key=lambda kv: kv[1])[:5]
+            image_data = load_image('tests/fixtures/files/cat.jpg', model_spec['target_size'],
+                preprocess_input=model_spec['preprocess_input'])
+            result = client.make_prediction(image_data, 'image')
+            assert 'class_probabilities' in result
+            assert len(result['class_probabilities']) == 1
+            assert len(result['class_probabilities'][0]) == 1000
+            predictions = result['class_probabilities'][0]
+            predictions = list(zip(imagenet_dictionary, predictions))
+            predictions = sorted(predictions, reverse=True, key=lambda kv: kv[1])[:5]
+            predictions = [(label, float(score)) for label, score in predictions]
             expected = [
-                ('spatula', 0.9628159403800964),
-                ('gondola', 0.02030189521610737),
-                ('toyshop', 0.003980898763984442),
-                ('tray', 0.00305487890727818),
-                ('lakeside, lakeshore', 0.001700777793303132)
+                ('impala, Aepyceros melampus', 0.334694504737854),
+                ('llama', 0.2851393222808838),
+                ('hartebeest', 0.15471667051315308),
+                ('bighorn, bighorn sheep, cimarron, Rocky Mountain bighorn, Rocky Mountain sheep, Ovis canadensis', 0.03160465136170387),
+                ('mink', 0.030886519700288773),
             ]
-            assert top_5 == expected
+            assert predictions == expected
             break
         except AbortionError as e:
             if e.details != 'Endpoint read failed' or attempt > 5:
@@ -80,7 +83,7 @@ def assert_model_serving(model_name, imagenet_dictionary):
 
 
 def test_convert_imagenet_inception_v3(temp_file, imagenet_dictionary):
-    model_name = 'inception'
+    model_name = 'inception_v3'
     tf_model_dir = setup_model(model_name, temp_file)
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
@@ -89,7 +92,7 @@ def test_convert_imagenet_inception_v3(temp_file, imagenet_dictionary):
 
 
 def test_convert_imagenet_mobilenet(temp_file, imagenet_dictionary):
-    model_name = 'mobilenet'
+    model_name = 'mobilenet_v1'
     tf_model_dir = setup_model(model_name, temp_file)
     KerasToTensorflow.convert(temp_file, tf_model_dir)
     assert_converted_model(tf_model_dir)
