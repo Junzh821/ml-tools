@@ -5,6 +5,8 @@ from keras.applications.vgg16 import VGG16, preprocess_input as vgg16_preprocess
 from keras.applications.vgg19 import VGG19, preprocess_input as vgg19_preprocess_input
 from keras.applications.resnet50 import ResNet50, preprocess_input as resnet50_preprocess_input
 
+from .utils import load_image
+
 
 MODEL_SPECS = {
     'inception_v3': {
@@ -47,6 +49,9 @@ class ModelSpec(object):
         self.klass = klass
         self.target_size = target_size
         self.preprocess_input = preprocess_input
+
+    def load_image(self, path):
+        return load_image(path, self.target_size, self.preprocess_input)
 
 
 def get_model_spec(name):
