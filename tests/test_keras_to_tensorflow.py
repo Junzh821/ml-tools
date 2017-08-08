@@ -61,11 +61,12 @@ def assert_model_serving(model_name, imagenet_dictionary, expected_top_5):
             client = TensorflowServingClient('localhost', MODEL_SERVING_PORTS[model_name])
             image_data = load_image('tests/fixtures/files/cat.jpg', model_spec.target_size,
                                     preprocess_input=model_spec.preprocess_input)
-            result = client.make_prediction(image_data, 'image')
-            assert 'class_probabilities' in result
-            assert len(result['class_probabilities']) == 1
-            assert len(result['class_probabilities'][0]) == 1000
-            predictions = result['class_probabilities'][0]
+            result = client.predict([image_data, ], 'images')
+            import pdb; pdb.set_trace()
+            assert 'predictions' in result
+            assert len(result['predictions']) == 1
+            assert len(result['predictions'][0]) == 1000
+            predictions = result['predictions'][0]
             predictions = list(zip(imagenet_dictionary, predictions))
             predictions = sorted(predictions, reverse=True, key=lambda kv: kv[1])[:5]
             predictions = [(label, float(score)) for label, score in predictions]

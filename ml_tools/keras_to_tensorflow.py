@@ -1,6 +1,7 @@
 import os
 import keras
-import tensorflow
+import numpy as np
+import tensorflow as tf
 
 
 class KerasToTensorflow(object):
@@ -25,7 +26,7 @@ class KerasToTensorflow(object):
             model_path = output_stripped_model_path
 
         keras.backend.clear_session()
-        session = tensorflow.Session()
+        session = tf.Session()
         keras.backend.set_session(session)
 
         # disable loading of learning nodes
@@ -33,21 +34,17 @@ class KerasToTensorflow(object):
 
         model = KerasToTensorflow.load_keras_model(model_path)
 
-        builder = tensorflow.saved_model.builder.SavedModelBuilder(output_dir)
-        signature = tensorflow.saved_model.signature_def_utils.predict_signature_def(
-            inputs={
-                'image': model.input
-            },
-            outputs={
-                'class_probabilities': model.output
-            }
+        builder = tf.saved_model.builder.SavedModelBuilder(output_dir)
+        signature = tf.saved_model.signature_def_utils.predict_signature_def(
+            inputs={'images': tf.convert_to_tensor(model.inputs)},
+            outputs={'predictions': tf.convert_to_tensor(model.outputs)}
         )
 
         builder.add_meta_graph_and_variables(
             sess=keras.backend.get_session(),
-            tags=[tensorflow.saved_model.tag_constants.SERVING],
+            tags=[tf.saved_model.tag_constants.SERVING],
             signature_def_map={
-                tensorflow.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: signature
+                tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY: signature
             }
         )
         builder.save()
@@ -56,6 +53,6 @@ class KerasToTensorflow(object):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) != 3 or not (sys.argv[1].endswith('.h5') or sys.argv[1].endswith('.hdf5')):
-        print('Usage: keras_to_tensorflow.py <hdf5_model_file> <output_dir>')
+        print('Usage: keras_to_tf.py <hdf5_model_file> <output_dir>')
         sys.exit(1)
     KerasToTensorflow.convert(sys.argv[1], sys.argv[2])
