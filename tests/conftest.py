@@ -1,6 +1,5 @@
 import pytest
 import csv
-import codecs
 import requests
 
 from tempfile import NamedTemporaryFile
