@@ -51,11 +51,3 @@ class KerasToTensorflow(object):
             }
         )
         builder.save()
-
-
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv) != 3 or not (sys.argv[1].endswith('.h5') or sys.argv[1].endswith('.hdf5')):
-        print('Usage: keras_to_tensorflow.py <hdf5_model_file> <output_dir>')
-        sys.exit(1)
-    KerasToTensorflow.convert(sys.argv[1], sys.argv[2])
