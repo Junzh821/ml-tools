@@ -12,34 +12,59 @@ MODEL_SPECS = {
     'inception_v3': {
         'class': InceptionV3,
         'target_size': (299, 299, 3),
-        'preprocess_input': inception_v3_preprocess_input,
+        'preprocess_input': inception_v3_preprocess_input,  # imagenet-alt
+        # https://github.com/fchollet/keras/blob/master/keras/applications/inception_v3.py#L390-L394
     },
     'mobilenet_v1': {
         'class': MobileNet,
         'target_size': (224, 224, 3),
-        'preprocess_input': mobilenet_v1_preprocess_input,
-    },
-    'resnet50': {
-        'class': ResNet50,
-        'target_size': (224, 224, 3),
-        'preprocess_input': resnet50_preprocess_input,
+        'preprocess_input': mobilenet_v1_preprocess_input,  # imagenet-alt
+        # https://github.com/fchollet/keras/blob/master/keras/applications/mobilenet.py#L86-L90
     },
     'xception': {
         'class': Xception,
         'target_size': (299, 299, 3),
-        'preprocess_input': xception_preprocess_input,
+        'preprocess_input': xception_preprocess_input,  # imagenet-alt
+        # https://github.com/fchollet/keras/blob/master/keras/applications/xception.py#L263-L267
+    },
+    'resnet50': {
+        'class': ResNet50,
+        'target_size': (224, 224, 3),
+        'preprocess_input': resnet50_preprocess_input,  # imagenet
+        # https://github.com/fchollet/keras/blob/master/keras/applications/resnet50.py#L32
     },
     'vgg16': {
         'class': VGG16,
         'target_size': (224, 224, 3),
-        'preprocess_input': vgg16_preprocess_input,
+        'preprocess_input': vgg16_preprocess_input,  # imagenet
+        # https://github.com/fchollet/keras/blob/master/keras/applications/vgg16.py#L27
     },
     'vgg19': {
         'class': VGG19,
         'target_size': (224, 224, 3),
-        'preprocess_input': vgg19_preprocess_input,
+        'preprocess_input': vgg19_preprocess_input,  # imagenet
+        # https://github.com/fchollet/keras/blob/master/keras/applications/vgg19.py#L27
     },
 }
+
+
+# preprocessing functions
+#
+# "imagenet"
+# https://github.com/fchollet/keras/blob/master/keras/applications/imagenet_utils.py#L11-L39
+# def preprocessing(x):
+#   x -= [<dataset per-channel means>]
+#   x /= 255.
+#   x *= 2.
+#   return x
+#
+# "imagenet-alt"
+# https://github.com/fchollet/keras/blob/master/keras/applications/inception_v3.py#L390-L394
+# def preprocess_input(x):
+#   x /= 255.
+#   x -= 0.5
+#   x *= 2.
+#   return x
 
 
 class ModelSpec(object):
