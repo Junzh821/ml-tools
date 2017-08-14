@@ -1,6 +1,5 @@
 import os
 import csv
-import logging
 import sys
 import json
 
@@ -43,7 +42,7 @@ def create_dataset(dataset_json):
             try:
                 dst = dataset_path + '/' + dataset_name + '/' + subset + '/' + class_name + '/' + img_name
                 os.symlink(src, dst)
-            except:
+            except BaseException:
                 # Error
                 print('Error processing image: %s', src)
                 j += 1
@@ -51,7 +50,7 @@ def create_dataset(dataset_json):
             i += 1
 
     print ('Total images read: ', i)
-    print ('Correct images: ', i-j)
+    print ('Correct images: ', i - j)
     print ('Error images: ', j)
     sys.stdout.flush()
 
