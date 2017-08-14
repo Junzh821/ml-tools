@@ -11,7 +11,6 @@ sys.path.append('../')
 from ml_tools.data_tools.create_csv import create_csv
 
 
-
 @pytest.fixture(scope='function')
 def dataset_path():
     tar = tarfile.open('tests/fixtures/files/dataset_test.tar.gz', "r:gz")
@@ -31,7 +30,9 @@ def dataset_path():
 def test_create_csv(dataset_path):
     subset = 'Training'
     csv_path = create_csv(dataset_path, subset)
-    with open(csv_path, 'rb') as actual, open('tests/fixtures/files/expected_dataset_Training.csv', 'rb') as expected:
+    print('dataset_path: ', dataset_path)
+    print(os.path.join(dataset_path, 'expected_dataset_Training.csv'))
+    with open(csv_path, 'rb') as actual, open(os.path.join(dataset_path, 'expected_dataset_Training.csv'), 'rb') as expected:
         actual_dataset = csv.reader(actual, delimiter=',')
         expected_dataset = csv.reader(expected, delimiter=',')
         actual_csv = list(actual_dataset)[1:]
@@ -42,6 +43,6 @@ def test_create_csv(dataset_path):
         expected_csv = list(expected_dataset)[1:]
         for expected_file in expected_csv:
             expected_file[0] = expected_file[0].replace('./dataset_test/', '')
-        print(list(expected_csv))
+        print('Expected_csv: ', list(expected_csv))
 
     assert actual_csv == expected_csv
