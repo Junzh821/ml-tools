@@ -1,12 +1,8 @@
 import pytest
 import os
-import sys
 import csv
 import tarfile
 from backports.tempfile import TemporaryDirectory
-
-import sys
-sys.path.append('../')
 
 from ml_tools.data_tools.create_csv import create_csv
 
@@ -30,8 +26,6 @@ def dataset_path():
 def test_create_csv(dataset_path):
     subset = 'Training'
     csv_path = create_csv(dataset_path, subset)
-    print('dataset_path: ', dataset_path)
-    print(os.path.join(dataset_path, 'expected_dataset_Training.csv'))
     with open(csv_path, 'rb') as actual, open(os.path.join(dataset_path, 'expected_dataset_Training.csv'), 'rb') as expected:
         actual_dataset = csv.reader(actual, delimiter=',')
         expected_dataset = csv.reader(expected, delimiter=',')
@@ -39,10 +33,8 @@ def test_create_csv(dataset_path):
         for actual_file in actual_csv:
             actual_file[0] = actual_file[0].replace(dataset_path, '').strip('/')
 
-        print('Actual_csv: ', list(actual_csv))
         expected_csv = list(expected_dataset)[1:]
         for expected_file in expected_csv:
             expected_file[0] = expected_file[0].replace('./dataset_test/', '')
-        print('Expected_csv: ', list(expected_csv))
 
     assert actual_csv == expected_csv
