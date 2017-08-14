@@ -33,6 +33,7 @@ def create_csv(rootdir, set):
                 i = 0
     print('CSV file created: ', file)
     print('Total images: ', total_imgs)
+    return file
 
 
 if __name__ == "__main__":
