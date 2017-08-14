@@ -103,4 +103,4 @@ ENV/
 .mypy_cache/
 
 # tar files
-/tests/ficures/files/dataset_test.tar.gz
+/tests/fixtures/files/dataset_test.tar.gz
