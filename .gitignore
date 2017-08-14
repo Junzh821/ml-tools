@@ -104,3 +104,6 @@ ENV/
 
 # tar files
 /tests/fixtures/files/dataset_test.tar.gz
+
+# init files
+ml_tools/data_tools/__init__.py
