@@ -1,0 +1,29 @@
+filename,label,class_name
+./dataset_test/Training/ACNE/Acne/acne due to lithium.PNG.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/acne due to oral steroids used to treat dermatomyositis.PNG.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/acne excorie╠üe.PNG.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne_buttocks.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/acne_chest_scars.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne_conglobat_comedones.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne_conglobat_comedones_rd.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne_conglobata_butt.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne_conglobata_face.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne 1/AcnC╠º ExcoriC╠ºe des Jeunes Filles-001.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne 1/AcnC╠º ExcoriC╠ºe des Jeunes Filles-002.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne 1/AcnC╠º ExcoriC╠ºe des Jeunes Filles-003.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne 1/AcnC╠º ExcoriC╠ºe des Jeunes Filles-004.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne/Acne 1/Acne Aestivalis-001.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne Aestivalis/Acne aestivalis (1 of 2).jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne Aestivalis/Acne aestivalis (2 of 2).jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne Aestivalis/Acne aestivalis 1 of 5-001.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne Aestivalis/Acne aestivalis 1 of 5-002.jpg,0,ACNE
+./dataset_test/Training/ACNE/Acne Aestivalis/Acne aestivalis 2 of 5-001.jpg,0,ACNE
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/actinic keratosis-2.jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/actinic keratosis-3.jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/actinic keratosis-4.jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/actinic keratosis-6.jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/Actinic Keratosis copy/Actinic keratoses 1 of 2(1).jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/Actinic Keratosis copy/Actinic keratoses(13).jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/Actinic Keratosis copy/Actinic keratoses(9).jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/Actinic Keratosis copy/actinic keratoses-1.jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
+"./dataset_test/Training/ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA/Actinic Keratosis (AK), Solar Keratosis/Actinic Keratosis copy/Actinic keratosis  1 of 2-001.jpg",1,"ACTINIC KERATOSIS, SQUAMOUS CELL CARCINOMA"
