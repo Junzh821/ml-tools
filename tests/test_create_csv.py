@@ -37,4 +37,4 @@ def test_create_csv(dataset_path):
         for expected_file in expected_csv:
             expected_file[0] = expected_file[0].replace('./dataset_test/', '')
 
-    assert actual_csv == expected_csv
+    assert sorted(actual_csv) == sorted(expected_csv)
