@@ -34,11 +34,11 @@ batch_size = 500
 train_datagen = image.ImageDataGenerator()
 
 train_generator = train_datagen.flow_from_directory(
-        complete_data_path,
-        target_size=target_size,
-        batch_size=batch_size,
-        shuffle=False,
-        class_mode='sparse')
+    complete_data_path,
+    target_size=target_size,
+    batch_size=batch_size,
+    shuffle=False,
+    class_mode='sparse')
 
 mean = np.zeros((3, 1))
 std = np.zeros((3, 1))
@@ -49,9 +49,9 @@ n_total_images = train_generator.samples
 n_batches = n_total_images // batch_size
 last_imgs = n_total_images % batch_size
 
-print ('Total Images', n_total_images)
-print ('Using %d Batches of size %d ' % (n_batches, batch_size))
-print ('Images in last batch ', last_imgs)
+print('Total Images', n_total_images)
+print('Using %d Batches of size %d ' % (n_batches, batch_size))
+print('Images in last batch ', last_imgs)
 
 
 # High Res. images takes longer
@@ -66,7 +66,7 @@ for X_batch, y_batch in train_generator:
                 std[ch] += np.std(img[:, :, ch])
 
     elif count_batch > n_batches:
-        print ('END')
+        print('END')
         break
 
     else:
@@ -75,9 +75,9 @@ for X_batch, y_batch in train_generator:
             for ch in range(0, 3):
                 mean[ch] += np.mean(img[:, :, ch])
                 std[ch] += np.std(img[:, :, ch])
-                
-    print ('Batch number ', count_batch)
-    print ('time batch', time.time()-t)
+
+    print('Batch number ', count_batch)
+    print('time batch', time.time() - t)
     sys.stdout.flush()
     mean /= mean_count
     std /= mean_count
@@ -88,13 +88,13 @@ for X_batch, y_batch in train_generator:
 class_counter = collections.Counter(train_generator.classes)
 class_histogram = list()
 
-print ('||*||-- Stats Dataset --||*||')
-print ('Total Images ', n_total_images)
+print('||*||-- Stats Dataset --||*||')
+print('Total Images ', n_total_images)
 for k in class_counter.keys():
-    print ('Class %d has %d images' % (k, class_counter[k]))
+    print('Class %d has %d images' % (k, class_counter[k]))
     class_histogram.append(class_counter[k])
-print ('Mean', mean)
-print ('Std', std)
+print('Mean', mean)
+print('Std', std)
 
 # Convert to numpy array
 class_histogram = np.array(class_histogram)
@@ -106,4 +106,3 @@ dictionary = {'n_images': n_total_images, 'mean': mean, 'std': std, 'class_histo
 
 with open(file_pickle, 'wb') as handle:
     pickle.dump(dictionary, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
