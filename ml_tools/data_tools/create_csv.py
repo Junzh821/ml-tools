@@ -17,7 +17,7 @@ def create_csv(rootdir, set):
         writer.writeheader()
         for dirpath, dirnames, filenames in os.walk(os.path.join(rootdir, set)):
             if first:
-                parent_classes = sorted(dirnames)
+                parent_classes = dirnames
                 first = False
 
             if os.path.basename(dirpath) in parent_classes:
