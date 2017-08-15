@@ -102,5 +102,3 @@ ENV/
 # mypy
 .mypy_cache/
 
-# init files
-ml_tools/data_tools/__init__.py
