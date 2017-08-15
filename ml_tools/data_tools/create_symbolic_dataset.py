@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import csv
 import sys
@@ -12,15 +13,13 @@ def create_folders(path):
         print 'Path already exists'
 
 
-def create_dataset(dataset_json):
+def create_symbolic_dataset(dataset_json):
     i = 0
     j = 0
     pool_classes = []
 
-    with open(dataset_json) as data_file:
+    with open(dataset_json, 'r') as data_file:
         data = json.load(data_file)
-
-    print data
 
     csv_file = data['csv_path']
     dataset_path = data['symbolic_dataset_path']
@@ -52,6 +51,7 @@ def create_dataset(dataset_json):
     print ('Total images read: ', i)
     print ('Correct images: ', i - j)
     print ('Error images: ', j)
+    print ('Symbolic dataset created in ', dataset_path)
     sys.stdout.flush()
 
 
