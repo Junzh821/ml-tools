@@ -4,18 +4,18 @@ import sys
 import csv
 
 
-def create_csv(rootdir, set):
+def create_csv(rootdir, partition):
     first = True
     label = 0
     i = 0
     total_imgs = 0
-    file = os.path.join(rootdir, os.path.basename(rootdir) + '_' + set + '.csv')
+    file = os.path.join(rootdir, os.path.basename(rootdir) + '_' + partition + '.csv')
 
     with open(file, "wb") as csv_file:
         fieldnames = ['filename', 'label', 'class_name']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
-        for dirpath, dirnames, filenames in os.walk(os.path.join(rootdir, set)):
+        for dirpath, dirnames, filenames in os.walk(os.path.join(rootdir, partition)):
             if first:
                 parent_classes = dirnames
                 first = False
@@ -39,10 +39,10 @@ def create_csv(rootdir, set):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print('Usage: script create_csv <rootdir> <set>')
-        print('<rootdir>: dataset directory where sets are stored')
-        print('<set>: string indicating the subset name. i.e. "Training", "Validation" ')
+        print('Usage: script create_csv <rootdir> <partition>')
+        print('<rootdir>: dataset directory where partitions are stored')
+        print('<partition>: string indicating the dataset partition name. i.e. "Training", "Validation" ')
         sys.exit(1)
     dataset_path = sys.argv[1]
     subset = sys.argv[2]
-    create_csv(dataset_path, subset)
+    create_csv(dataset_path, partition)
