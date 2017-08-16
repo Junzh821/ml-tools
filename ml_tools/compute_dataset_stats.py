@@ -5,104 +5,159 @@ import pickle
 import time
 import sys
 import argparse
+import os
 # Solve High Resolution truncated files
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-'''
-Compute N_images, Mean, Std, Class Histogram from the dataset introduced with the paths. Save info in pickle file.
-It needs a dataset with N class folders and all the images of the class inside the folder.
-I've checked that there is no image repetition per batch. In the end all the images are used to compute the stats.
-'''
+def compute_mean_std(data_path, batch_size, target_size, generator=None):
+    if generator is None:
+        # Keras img loaders
+        train_datagen = image.ImageDataGenerator()
 
-# Dataset paths
-parser = argparse.ArgumentParser()
-parser.add_argument('--data_path', help='Dataset path', default='/data/images/symbolic_datasets/')
-parser.add_argument('--name_dataset', help='Name dataset', default='')
-parser.add_argument('--subset', help='(train, val, test)', default='train')
+        generator = train_datagen.flow_from_directory(
+            data_path,
+            target_size=target_size,
+            batch_size=batch_size,
+            shuffle=False,
+            class_mode='sparse')
 
-opts = parser.parse_args()
+    mean_aux = np.zeros((3, 1))
+    std_aux = np.zeros((3, 1))
+    mean = np.zeros((3, 1))
+    std = np.zeros((3, 1))
+    count_batch = 1
+    mean_count = 0
 
-complete_data_path = opts.data_path + '/' + opts.name_dataset + '/' + opts.subset
+    n_total_images = generator.samples
+    n_batches = n_total_images // batch_size
+    last_imgs = n_total_images % batch_size
 
-# Target Size and Batch Size
-target_size = (224, 224)
-batch_size = 500
+    print ('Computing mean and std...')
+    print('Total Images', n_total_images)
+    print('Using %d Batches of size %d ' % (n_batches, batch_size))
+    print('Images in last batch ', last_imgs)
+    t_t = time.time()
+    # High Res. images takes longer
+    for X_batch, y_batch in generator:
+        # Last Batch
+        t = time.time()
+        if count_batch == n_batches+1:
+            for img in X_batch[0:last_imgs]:
+                mean_count += 1
+                for ch in range(0, 3):
+                    mean_aux[ch] += np.mean(img[:, :, ch])
+                    std_aux[ch] += np.std(img[:, :, ch])
+            mean_aux /= n_total_images
+            std_aux /= n_total_images
 
-# Keras img loaders
-train_datagen = image.ImageDataGenerator()
+        elif count_batch > n_batches:
+            print('End')
+            break
 
-train_generator = train_datagen.flow_from_directory(
-    complete_data_path,
-    target_size=target_size,
-    batch_size=batch_size,
-    shuffle=False,
-    class_mode='sparse')
+        else:
+            for img in X_batch:
+                mean_count += 1
+                for ch in range(0, 3):
+                    mean_aux[ch] += np.mean(img[:, :, ch])
+                    std_aux[ch] += np.std(img[:, :, ch])
+            mean_aux /= n_total_images
+            std_aux /= n_total_images
 
-mean = np.zeros((3, 1))
-std = np.zeros((3, 1))
-count_batch = 1
-mean_count = 0
+        print('Batch number ', count_batch)
+        print('Time elapsed', time.time() - t)
+        sys.stdout.flush()
+        mean += mean_aux
+        std += std_aux
+        count_batch += 1
 
-n_total_images = train_generator.samples
-n_batches = n_total_images // batch_size
-last_imgs = n_total_images % batch_size
+    mean = mean[:, 0]
+    std = std[:, 0]
+    print('Mean ', mean)
+    print('Std ', std)
+    print('Total time elapsed ', time.time() - t_t)
+    return mean, std
 
-print('Total Images', n_total_images)
-print('Using %d Batches of size %d ' % (n_batches, batch_size))
-print('Images in last batch ', last_imgs)
+
+def create_class_histogram(data_path, generator=None):
+    if generator is None:
+        # Keras img loaders
+        train_datagen = image.ImageDataGenerator()
+
+        generator = train_datagen.flow_from_directory(
+            data_path,
+            target_size=target_size,
+            batch_size=batch_size,
+            shuffle=False,
+            class_mode='sparse')
+
+    # Create histogram of classes
+    class_counter = collections.Counter(generator.classes)
+    class_histogram = list()
+    for k in class_counter.keys():
+        print('Class %d has %d images' % (k, class_counter[k]))
+        class_histogram.append(class_counter[k])
+
+    # Convert to numpy array
+    class_histogram = np.array(class_histogram)
+
+    return class_histogram
 
 
-# High Res. images takes longer
-for X_batch, y_batch in train_generator:
-    # Last Batch
-    t = time.time()
-    if count_batch == n_batches:
-        for img in X_batch[0:last_imgs]:
-            mean_count += 1
-            for ch in range(0, 3):
-                mean[ch] += np.mean(img[:, :, ch])
-                std[ch] += np.std(img[:, :, ch])
+def compute_n_images(data_path, generator=None):
+    if generator is None:
+        # Keras img loaders
+        train_datagen = image.ImageDataGenerator()
 
-    elif count_batch > n_batches:
-        print('END')
-        break
+        generator = train_datagen.flow_from_directory(
+            data_path,
+            target_size=target_size,
+            batch_size=batch_size,
+            shuffle=False,
+            class_mode='sparse')
 
-    else:
-        for img in X_batch:
-            mean_count += 1
-            for ch in range(0, 3):
-                mean[ch] += np.mean(img[:, :, ch])
-                std[ch] += np.std(img[:, :, ch])
+    print ('Number of images in dataset is ', generator.samples)
+    return generator.samples
 
-    print('Batch number ', count_batch)
-    print('time batch', time.time() - t)
-    sys.stdout.flush()
-    mean /= mean_count
-    std /= mean_count
-    count_batch += 1
-    mean_count = 1
 
-# Create histogram of classes
-class_counter = collections.Counter(train_generator.classes)
-class_histogram = list()
+def compute_stats(data_path, target_size=(224, 224), batch_size=500, generator=None, save_name=''):
+    '''
+    Compute N_images, Mean, Std, Class Histogram from the dataset introduced with the paths/ generator.
+    Save info in pickle file if you introduce a save_name.
+    I've checked that there is no image repetition per batch. In the end all the images are used to compute the stats.
 
-print('||*||-- Stats Dataset --||*||')
-print('Total Images ', n_total_images)
-for k in class_counter.keys():
-    print('Class %d has %d images' % (k, class_counter[k]))
-    class_histogram.append(class_counter[k])
-print('Mean', mean)
-print('Std', std)
+   :param path_data: path to folder with classes of the dataset.
+   :param batch_size: size of batches to process.
+   :param target_size: size of the target images.
+   :param generator: Keras image generator.
+   :param save_name: To save a pickle object with the dictionary
+   :return: A dictionary containing {'n_images': n_total_images, 'mean': mean, 'std': std,  'class_histogram': class_histogram}
+    '''
 
-# Convert to numpy array
-class_histogram = np.array(class_histogram)
+    if generator is None:
+        # Keras img loaders
+        train_datagen = image.ImageDataGenerator()
 
-# Save Stats in pickle file
-file_pickle = opts.data_path + '/' + opts.name_dataset + '/' + opts.name_dataset + '_' + opts.subset + '_stats.pickle'
+        generator = train_datagen.flow_from_directory(
+            data_path,
+            target_size=target_size,
+            batch_size=batch_size,
+            shuffle=False,
+            class_mode='sparse')
 
-dictionary = {'n_images': n_total_images, 'mean': mean, 'std': std, 'class_histogram': class_histogram}
+    mean, std = compute_mean_std(data_path, batch_size, target_size, generator)
+    n_total_images = generator.samples
+    class_histogram = create_class_histogram(data_path, generator)
 
-with open(file_pickle, 'wb') as handle:
-    pickle.dump(dictionary, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    dict_stats = {'n_images': n_total_images, 'mean': mean, 'std': std, 'class_histogram': class_histogram}
+
+    if save_name != '':
+        # Save Stats in pickle file
+        file_pickle = save_name
+        with open(file_pickle, 'wb') as handle:
+            pickle.dump(dict_stats, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+        print ('Saved pickle file in, ', save_name)
+
+    return dict_stats
