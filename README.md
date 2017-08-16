@@ -7,7 +7,7 @@ Tools for common machine learning tasks with Keras.
 ## Mac
 
  - Install Python 3
- - `script/up`
+ - `script/setup`
 
 
 # Testing
