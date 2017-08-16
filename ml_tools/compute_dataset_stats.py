@@ -4,8 +4,6 @@ import collections
 import pickle
 import time
 import sys
-import argparse
-import os
 # Solve High Resolution truncated files
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -34,7 +32,7 @@ def compute_mean_std(data_path, batch_size, target_size, generator=None):
     n_batches = n_total_images // batch_size
     last_imgs = n_total_images % batch_size
 
-    print ('Computing mean and std...')
+    print('Computing mean and std...')
     print('Total Images', n_total_images)
     print('Using %d Batches of size %d ' % (n_batches, batch_size))
     print('Images in last batch ', last_imgs)
@@ -43,7 +41,7 @@ def compute_mean_std(data_path, batch_size, target_size, generator=None):
     for X_batch, y_batch in generator:
         # Last Batch
         t = time.time()
-        if count_batch == n_batches+1:
+        if count_batch == n_batches + 1:
             for img in X_batch[0:last_imgs]:
                 mean_count += 1
                 for ch in range(0, 3):
@@ -117,7 +115,7 @@ def compute_n_images(data_path, generator=None):
             shuffle=False,
             class_mode='sparse')
 
-    print ('Number of images in dataset is ', generator.samples)
+    print('Number of images in dataset is ', generator.samples)
     return generator.samples
 
 
@@ -158,6 +156,6 @@ def compute_stats(data_path, target_size=(224, 224), batch_size=500, generator=N
         with open(file_pickle, 'wb') as handle:
             pickle.dump(dict_stats, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-        print ('Saved pickle file in, ', save_name)
+        print('Saved pickle file in, ', save_name)
 
     return dict_stats
