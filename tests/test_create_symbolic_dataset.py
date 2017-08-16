@@ -4,6 +4,7 @@ import tarfile
 import json
 from backports.tempfile import TemporaryDirectory
 
+from ml_tools.utils import list_files
 from ml_tools.data_tools.create_csv import create_csv
 from ml_tools.data_tools.create_symbolic_dataset import create_symbolic_dataset
 
@@ -27,7 +28,7 @@ def dataset_path():
 def test_create_symbolic_datset(dataset_path):
 
     subset = 'Training'
-    csv_path = create_csv(dataset_path, subset)
+    csv_path = create_csv(os.path.join(dataset_path, subset))
 
     dataset_json = {}
     dataset_json['csv_path'] = csv_path
@@ -40,3 +41,12 @@ def test_create_symbolic_datset(dataset_path):
         json.dump(dataset_json, output_file)
 
     create_symbolic_dataset(json_file)
+
+    files = list_files(dataset_path)
+    train_files = list_files(os.path.join(dataset_path, 'Training'))
+    val_files = list_files(os.path.join(dataset_path, 'Validation'))
+
+    assert len(files) == 55
+    assert len(train_files) == 28
+    assert len(val_files) == 7
+

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import os.path as path
 import csv
 import sys
 import json
@@ -35,11 +36,11 @@ def create_symbolic_dataset(dataset_json):
 
             if class_name not in pool_classes:
                 pool_classes.append(class_name)
-                create_folders(dataset_path + '/' + dataset_name + '/' + subset + '/' + class_name)
+                create_folders(path.join(dataset_path, path.join(dataset_name, path.join(subset, class_name))))
 
             # Create Symbolic Link
             try:
-                dst = dataset_path + '/' + dataset_name + '/' + subset + '/' + class_name + '/' + img_name
+                dst = path.join(dataset_path, path.join(dataset_name, path.join(subset, path.join(class_name, img_name))))
                 os.symlink(src, dst)
             except BaseException:
                 # Error
