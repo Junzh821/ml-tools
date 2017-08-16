@@ -21,10 +21,10 @@ def compute_mean_std(data_path, batch_size, target_size, generator=None):
             shuffle=False,
             class_mode='sparse')
 
-    mean_aux = np.zeros((3, 1))
-    std_aux = np.zeros((3, 1))
-    mean = np.zeros((3, 1))
-    std = np.zeros((3, 1))
+    mean_aux = np.zeros(3)
+    std_aux = np.zeros(3)
+    mean = np.zeros(3)
+    std = np.zeros(3)
     count_batch = 1
     mean_count = 0
 
@@ -70,8 +70,6 @@ def compute_mean_std(data_path, batch_size, target_size, generator=None):
         std += std_aux
         count_batch += 1
 
-    mean = mean[:, 0]
-    std = std[:, 0]
     print('Mean ', mean)
     print('Std ', std)
     print('Total time elapsed ', time.time() - t_t)
@@ -82,11 +80,11 @@ def create_class_histogram(data_path, generator=None):
     if generator is None:
         # Keras img loaders
         train_datagen = image.ImageDataGenerator()
-
+        # This function would never use them
         generator = train_datagen.flow_from_directory(
             data_path,
-            target_size=target_size,
-            batch_size=batch_size,
+            target_size=(10, 10),
+            batch_size=10,
             shuffle=False,
             class_mode='sparse')
 
@@ -107,11 +105,11 @@ def compute_n_images(data_path, generator=None):
     if generator is None:
         # Keras img loaders
         train_datagen = image.ImageDataGenerator()
-
+        # This function would never use them
         generator = train_datagen.flow_from_directory(
             data_path,
-            target_size=target_size,
-            batch_size=batch_size,
+            target_size=(10, 10),
+            batch_size=10,
             shuffle=False,
             class_mode='sparse')
 
