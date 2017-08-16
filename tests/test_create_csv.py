@@ -25,7 +25,8 @@ def dataset_path():
 
 def test_create_csv(dataset_path):
     subset = 'Training'
-    csv_path = create_csv(dataset_path, subset)
+    partition_path = os.path.join(dataset_path, subset)
+    csv_path = create_csv(partition_path)
     with open(csv_path, 'rb') as actual, open(os.path.join(dataset_path, 'expected_dataset_Training.csv'), 'rb') as expected:
         actual_dataset = csv.reader(actual, delimiter=',')
         expected_dataset = csv.reader(expected, delimiter=',')
