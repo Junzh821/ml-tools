@@ -9,7 +9,7 @@ def create_csv(rootdir, partition):
     label = 0
     i = 0
     total_imgs = 0
-    file = os.path.join(rootdir, os.path.basename(rootdir) + '_' + partition + '.csv')
+    csv_filename = os.path.join(rootdir, os.path.basename(rootdir) + '_' + partition + '.csv')
 
     with open(file, "wb") as csv_file:
         fieldnames = ['filename', 'label', 'class_name']
@@ -32,7 +32,7 @@ def create_csv(rootdir, partition):
                 print('Found ' + str(i) + ' images from parent class ' + os.path.basename(dirpath))
                 label += 1
                 i = 0
-    print('CSV file created: ', file)
+    print('CSV file created: ', csv_filename)
     print('Total images: ', total_imgs)
     return csv_filename
 
