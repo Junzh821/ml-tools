@@ -23,7 +23,7 @@ def create_csv(rootdir):
                 parent_classes = dirnames
                 first = False
 
-            if os.path.basename(dirpath) in parent_classes:
+            if os.path.basename(dirpath) in sorted(parent_classes):
                 for sub_dirpath, sub_dirnames, sub_filenames in os.walk(dirpath):
                     for image in sub_filenames:
                         filename = os.path.join(sub_dirpath, image)
