@@ -53,31 +53,32 @@ def test_make_parallel():
 
 
 def test_make_parallel_with_incompatible_data():
-    a = Input(shape=(3,), name='input_a')
-    b = Input(shape=(3,), name='input_b')
-    a_2 = Dense(4, name='dense_1')(a)
-    dp = Dropout(0.5, name='dropout')
-    b_2 = dp(b)
-    optimizer = 'rmsprop'
-    loss = 'mse'
-    loss_weights = [1., 0.5]
-    model = Model([a, b], [a_2, b_2])
-    model = make_parallel(model, 2)
-    model.compile(optimizer, loss,
-                  metrics=[],
-                  loss_weights=loss_weights,
-                  sample_weight_mode=None
-                  )
-    trained_epochs = []
+    for _ in range(5):
+        a = Input(shape=(3,), name='input_a')
+        b = Input(shape=(3,), name='input_b')
+        a_2 = Dense(4, name='dense_1')(a)
+        dp = Dropout(0.5, name='dropout')
+        b_2 = dp(b)
+        optimizer = 'rmsprop'
+        loss = 'mse'
+        loss_weights = [1., 0.5]
+        model = Model([a, b], [a_2, b_2])
+        model = make_parallel(model, 2)
+        model.compile(optimizer, loss,
+                      metrics=[],
+                      loss_weights=loss_weights,
+                      sample_weight_mode=None
+                      )
+        trained_epochs = []
 
-    def on_epoch_begin(epoch, logs):
-        trained_epochs.append(epoch)
-    tracker_cb = LambdaCallback(on_epoch_begin=on_epoch_begin)
-    with pytest.raises(InvalidArgumentError) as e:
-        out = model.fit_generator(generate_incompatible_data(4),
-                                  steps_per_epoch=3,
-                                  epochs=5,
-                                  initial_epoch=2,
-                                  callbacks=[tracker_cb]
-                                  )
-    assert str(e.value).startswith('Incompatible shapes: [4,4] vs. [5,4]')
+        def on_epoch_begin(epoch, logs):
+            trained_epochs.append(epoch)
+        tracker_cb = LambdaCallback(on_epoch_begin=on_epoch_begin)
+        with pytest.raises(InvalidArgumentError) as e:
+            out = model.fit_generator(generate_incompatible_data(4),
+                                      steps_per_epoch=3,
+                                      epochs=5,
+                                      initial_epoch=2,
+                                      callbacks=[tracker_cb]
+                                      )
+        assert str(e.value).startswith('Incompatible shapes: [4,4] vs. [5,4]'), str(e.value)
