@@ -15,7 +15,6 @@ setup(
     ],
     install_requires=[
         'keras',
-        'h5py',
         'pillow'
     ]
 )
