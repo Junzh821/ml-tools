@@ -81,4 +81,5 @@ def test_make_parallel_with_incompatible_data():
                                       initial_epoch=2,
                                       callbacks=[tracker_cb]
                                       )
-        assert str(e.value).startswith('Incompatible shapes: [4,4] vs. [5,4]'), str(e.value)
+        assert (str(e.value).startswith('Incompatible shapes: [4,4] vs. [5,4]') or
+                str(e.value).startswith('Incompatible shapes: [4,3] vs. [5,3]')), str(e.value)
