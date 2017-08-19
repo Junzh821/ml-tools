@@ -5,6 +5,7 @@ from keras.layers import Dense, Dropout
 from keras.engine.topology import Input
 from keras.engine.training import Model
 from keras.callbacks import LambdaCallback
+from tensorflow.python.framework.errors import InvalidArgumentError
 
 from ml_tools import make_parallel
 
@@ -17,8 +18,8 @@ def generate_data(batch_size):
 
 def generate_incompatible_data(batch_size):
     while True:
-        yield ([np.random.random((batch_size + 1, 3)), np.random.random((batch_size, 3))],
-               [np.random.random((batch_size, 4)), np.random.random((batch_size, 3))])
+        yield ([np.random.random((batch_size + 1, 3)), np.random.random((batch_size + 1, 3))],
+               [np.random.random((batch_size + 1, 4)), np.random.random((batch_size + 1, 3))])
 
 
 def test_make_parallel():
@@ -72,11 +73,11 @@ def test_make_parallel_with_incompatible_data():
     def on_epoch_begin(epoch, logs):
         trained_epochs.append(epoch)
     tracker_cb = LambdaCallback(on_epoch_begin=on_epoch_begin)
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(InvalidArgumentError) as e:
         out = model.fit_generator(generate_incompatible_data(4),
                                   steps_per_epoch=3,
                                   epochs=5,
                                   initial_epoch=2,
                                   callbacks=[tracker_cb]
                                   )
-    assert str(e.value) == 'All input arrays (x) should have the same number of samples. Got array shapes: [(5, 3), (4, 3)]'
+    assert str(e.value).startswith('Incompatible shapes: [4,4] vs. [5,4]')
