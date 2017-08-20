@@ -13,6 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from __future__ import division
 
 import tensorflow as tf
@@ -22,9 +23,17 @@ from keras.layers.core import Lambda
 from keras.layers.merge import concatenate
 
 
+class MakeParallelException(Exception):
+    '''Thrown when make_parallel cannot parallelize a model'''
+
+
 def make_parallel(model, gpu_count):
     def get_slice(data, idx, parts):
         shape = tf.shape(data)
+
+        if shape[0] % parts != 0:
+            raise MakeParallelException('Number of inputs must be a multiple of gpu_count')
+
         size = tf.concat([shape[:1] // parts, shape[1:]], axis=0)
         stride = tf.concat([shape[:1] // parts, shape[1:] * 0], axis=0)
         start = stride * idx
@@ -55,7 +64,7 @@ def make_parallel(model, gpu_count):
                 for l in range(len(outputs)):
                     outputs_all[l].append(outputs[l])
 
-    # merge outputs on CPU
+    # Merge outputs on CPU
     with tf.device('/cpu:0'):
         merged = []
         for outputs in outputs_all:
