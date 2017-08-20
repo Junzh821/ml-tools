@@ -10,13 +10,13 @@ from tensorflow.python.framework.errors import InvalidArgumentError
 from ml_tools import make_parallel
 
 
-def generate_compatible_data(batch_size):
+def generate_even_data(batch_size):
     while True:
         yield ([np.random.random((batch_size, 3)), np.random.random((batch_size, 3))],
                [np.random.random((batch_size, 4)), np.random.random((batch_size, 3))])
 
 
-def generate_incompatible_data(batch_size):
+def generate_uneven_data(batch_size):
     while True:
         yield ([np.random.random((batch_size + 1, 3)), np.random.random((batch_size + 1, 3))],
                [np.random.random((batch_size + 1, 4)), np.random.random((batch_size + 1, 3))])
@@ -48,9 +48,9 @@ def run_parallel_test(data_generator):
     assert trained_epochs == [2, 3, 4]
 
 
-def test_make_parallel():
-    run_parallel_test(generate_compatible_data)
+def test_make_parallel_with_even_data():
+    run_parallel_test(generate_even_data)
 
 
-def test_make_parallel_with_incompatible_data():
-    run_parallel_test(generate_incompatible_data)
+def test_make_parallel_with_uneven_data():
+    run_parallel_test(generate_uneven_data)
