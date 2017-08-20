@@ -7,14 +7,13 @@ from keras.engine.training import Model
 from keras.callbacks import LambdaCallback
 from tensorflow.python.framework.errors import InvalidArgumentError
 
-import ml_tools
 from ml_tools import make_parallel
 
 
 def generate_compatible_data(batch_size):
     while True:
         yield ([np.random.random((batch_size, 3)), np.random.random((batch_size, 3))],
-               [np.random.random((batch_size, 3)), np.random.random((batch_size, 3))])
+               [np.random.random((batch_size, 4)), np.random.random((batch_size, 3))])
 
 
 def generate_incompatible_data(batch_size):
@@ -54,6 +53,4 @@ def test_make_parallel():
 
 
 def test_make_parallel_with_incompatible_data():
-    for _ in range(5):
-        with pytest.raises(ml_tools.parallel.MakeParallelException):
-            run_parallel_test(generate_incompatible_data)
+    run_parallel_test(generate_incompatible_data)

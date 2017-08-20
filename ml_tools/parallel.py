@@ -23,20 +23,19 @@ from keras.layers.core import Lambda
 from keras.layers.merge import concatenate
 
 
-class MakeParallelException(Exception):
-    '''Thrown when make_parallel cannot parallelize a model'''
-
-
 def make_parallel(model, gpu_count):
     def get_slice(data, idx, parts):
         shape = tf.shape(data)
+        total_size = shape[:1]
+        slice_size = total_size // parts
+        slice_offset = slice_size * idx
 
-        if shape[0] % parts != 0:
-            raise MakeParallelException('Number of inputs must be a multiple of gpu_count')
+        if idx == parts-1:
+            # give the last slice any surplus data, to avoid chopping it off
+            slice_size += total_size % parts
 
-        size = tf.concat([shape[:1] // parts, shape[1:]], axis=0)
-        stride = tf.concat([shape[:1] // parts, shape[1:] * 0], axis=0)
-        start = stride * idx
+        size = tf.concat([slice_size, shape[1:]], axis=0)
+        start = tf.concat([slice_offset, shape[1:] * 0], axis=0)
         return tf.slice(data, start, size)
 
     outputs_all = []
