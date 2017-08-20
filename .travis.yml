@@ -1,12 +1,14 @@
-sudo: required
-
 language: python
 
-services:
-    - docker
+python:
+  - 2.7
+  - 3.4
+  - 3.5
+  - 3.6
 
 before_install:
-    - script/up
+  - script/setup
+  - pip install tensorflow  # this is so Keras loads for the tests
 
 script:
-    - script/test
+  - script/test

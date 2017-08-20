@@ -1,4 +1,4 @@
-Tools for common machine learning tasks using Tensorflow and Keras.
+Tools for common machine learning tasks with Keras.
 
 [![Build Status](https://travis-ci.org/triagemd/ml-tools.svg?branch=master)](https://travis-ci.org/triagemd/ml-tools)
 
@@ -6,9 +6,8 @@ Tools for common machine learning tasks using Tensorflow and Keras.
 
 ## Mac
 
- - Install Python 2
- - Install Docker for Mac
- - `script/up`
+ - Install Python 3
+ - `script/setup`
 
 
 # Testing
