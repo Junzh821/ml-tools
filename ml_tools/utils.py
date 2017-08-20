@@ -19,6 +19,6 @@ def list_files(path, relative=False):
         for filename in filenames:
             file_path = os.path.join(root, filename)
             if relative:
-                file_path = file_path[len(path):].strip('/')
+                file_path = os.path.relpath(file_path, path)
             matches.append(file_path)
     return matches
