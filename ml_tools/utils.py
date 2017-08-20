@@ -13,9 +13,12 @@ def load_image(image_path, target_size=None, preprocess_input=None):
     return image_data
 
 
-def list_files(path):
+def list_files(path, relative=False):
     matches = []
     for root, dirnames, filenames in os.walk(path):
         for filename in filenames:
-            matches.append(os.path.join(root, filename))
+            file_path = os.path.join(root, filename)
+            if relative:
+                file_path = os.path.relpath(file_path, path)
+            matches.append(file_path)
     return matches

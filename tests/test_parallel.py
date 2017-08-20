@@ -1,11 +1,9 @@
-import pytest
 import numpy as np
 
 from keras.layers import Dense, Dropout
 from keras.engine.topology import Input
 from keras.engine.training import Model
 from keras.callbacks import LambdaCallback
-from tensorflow.python.framework.errors import InvalidArgumentError
 
 from ml_tools import make_parallel
 

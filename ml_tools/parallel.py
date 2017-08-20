@@ -30,7 +30,7 @@ def make_parallel(model, gpu_count):
         slice_size = total_size // parts
         slice_offset = slice_size * idx
 
-        if idx == parts-1:
+        if idx == parts - 1:
             # give the last slice any surplus data, to avoid chopping it off
             slice_size += total_size % parts
 
