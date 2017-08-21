@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
 import csv
 import sys
@@ -7,10 +8,10 @@ import json
 
 def create_folders(path):
     if not os.path.exists(path):
-        print 'Creating path: ', path
+        print ('Creating path: ', path)
         os.makedirs(path)
     else:
-        print 'Path already exists'
+        print ('Path already exists')
 
 
 def create_symbolic_dataset(dataset_json):
