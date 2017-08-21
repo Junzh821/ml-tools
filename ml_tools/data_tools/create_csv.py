@@ -14,7 +14,7 @@ def create_csv(rootdir):
     dataset_name = os.path.basename(dataset_path)
     csv_filename = os.path.join(rootdir, dataset_name + '_' + partition + '.csv')
 
-    with open(csv_filename, "wb") as csv_file:
+    with open(csv_filename, "w") as csv_file:
         fieldnames = ['filename', 'label', 'class_name']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -28,7 +28,7 @@ def create_csv(rootdir):
                     for image in sorted(sub_filenames):
                         filename = os.path.join(sub_dirpath, image)
                         # Not write '.DS_Store' file as img
-                        if not filename.startswith('.'):
+                        if '.DS_Store' not in filename:
                             writer.writerow({'filename': filename, 'label': label, 'class_name': os.path.basename(dirpath)})
                             i += 1
                 print('Found ' + str(i) + ' images from parent class ' + os.path.basename(dirpath))

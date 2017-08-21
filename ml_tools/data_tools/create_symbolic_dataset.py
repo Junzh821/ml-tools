@@ -27,7 +27,7 @@ def create_symbolic_dataset(dataset_json):
     dataset_name = data['dataset_name']
     subset = data['subset']
 
-    with open(csv_file, 'rb') as csvfile:
+    with open(csv_file, 'r') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=',')
         for row in reader:
             src = row['filename']
