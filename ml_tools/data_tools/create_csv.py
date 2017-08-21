@@ -31,9 +31,9 @@ def create_csv(rootdir):
                         if '.DS_Store' not in filename:
                             writer.writerow({'filename': filename, 'label': label, 'class_name': os.path.basename(dirpath)})
                             i += 1
-                            total_imgs += 1
                 print('Found ' + str(i) + ' images from parent class ' + os.path.basename(dirpath))
                 label += 1
+                total_imgs += i
                 i = 0
     print('CSV file created: ', csv_filename)
     print('Total images: ', total_imgs)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import os.path as path
 import csv
 import sys
 import json
@@ -15,8 +14,8 @@ def create_folders(path):
 
 
 def create_symbolic_dataset(dataset_json):
-    i = 0
-    j = 0
+    total_images = 0
+    failed_images = 0
     pool_classes = []
 
     with open(dataset_json, 'r') as data_file:
@@ -36,22 +35,22 @@ def create_symbolic_dataset(dataset_json):
 
             if class_name not in pool_classes:
                 pool_classes.append(class_name)
-                create_folders(path.join(dataset_path, path.join(dataset_name, path.join(subset, class_name))))
+                create_folders(os.path.join(dataset_path, dataset_name, subset, class_name))
 
             # Create Symbolic Link
             try:
-                dst = path.join(dataset_path, path.join(dataset_name, path.join(subset, path.join(class_name, img_name))))
+                dst = os.path.join(dataset_path, dataset_name, subset, class_name, img_name)
                 os.symlink(src, dst)
             except BaseException:
                 # Error
                 print('Error processing image: %s', src)
-                j += 1
+                failed_images += 1
 
-            i += 1
+            total_images += 1
 
-    print ('Total images read: ', i)
-    print ('Correct images: ', i - j)
-    print ('Error images: ', j)
+    print ('Total images read: ', total_images)
+    print ('Correct images: ', total_images - failed_images)
+    print ('Error images: ', failed_images)
     print ('Symbolic dataset created in ', dataset_path)
     sys.stdout.flush()
 
