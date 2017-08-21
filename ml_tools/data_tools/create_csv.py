@@ -3,7 +3,6 @@ import os
 import sys
 import csv
 
-
 def create_csv(rootdir):
     first = True
     label = 0
@@ -23,12 +22,12 @@ def create_csv(rootdir):
                 parent_classes = dirnames
                 first = False
 
-            if os.path.basename(dirpath) in sorted(parent_classes):
+            if os.path.basename(dirpath) in parent_classes:
                 for sub_dirpath, sub_dirnames, sub_filenames in os.walk(dirpath):
-                    for image in sub_filenames:
+                    for image in sorted(sub_filenames):
                         filename = os.path.join(sub_dirpath, image)
                         # Not write '.DS_Store' file as img
-                        if '.DS_Store' not in filename:
+                        if not filename.startswith('.'):
                             writer.writerow({'filename': filename, 'label': label, 'class_name': os.path.basename(dirpath)})
                             i += 1
                 print('Found ' + str(i) + ' images from parent class ' + os.path.basename(dirpath))
