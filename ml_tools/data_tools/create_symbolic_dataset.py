@@ -63,4 +63,4 @@ if __name__ == "__main__":
 
     dataset_json = sys.argv[1]
 
-    create_dataset(dataset_json)
+    create_symbolic_dataset(dataset_json)
