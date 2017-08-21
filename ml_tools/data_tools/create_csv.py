@@ -3,6 +3,7 @@ from __future__ import print_function
 import os
 import sys
 import csv
+from ml_tools.utils import list_files
 
 def create_csv(rootdir):
     first = True
@@ -24,9 +25,9 @@ def create_csv(rootdir):
                 first = False
 
             if os.path.basename(dirpath) in parent_classes:
-                for sub_dirpath, sub_dirnames, sub_filenames in os.walk(dirpath):
-                    for image in sorted(sub_filenames):
-                        filename = os.path.join(sub_dirpath, image)
+                images = list_files(dirpath)
+                for image in images:
+                        filename = os.path.join(dirpath, image)
                         # Not write '.DS_Store' file as img
                         if '.DS_Store' not in filename:
                             writer.writerow({'filename': filename, 'label': label, 'class_name': os.path.basename(dirpath)})
