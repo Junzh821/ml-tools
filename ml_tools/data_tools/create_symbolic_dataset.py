@@ -53,14 +53,3 @@ def create_symbolic_dataset(dataset_json):
     print ('Error images: ', failed_images)
     print ('Symbolic dataset created in ', dataset_path)
     sys.stdout.flush()
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 1:
-        print('Usage: python create_symbolic_dataset <dataset_json> ')
-        print('<dataset_json>: path to json file with dataset info')
-        sys.exit(1)
-
-    dataset_json = sys.argv[1]
-
-    create_symbolic_dataset(dataset_json)

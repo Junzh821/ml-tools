@@ -37,12 +37,3 @@ def create_csv(rootdir):
     print('CSV file created: ', csv_filename)
     print('Total images: ', total_imgs)
     return csv_filename
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 1:
-        print('Usage: script create_csv <partition_path> ')
-        print('<partition_path>: dataset partition directory where class folders are stored')
-        sys.exit(1)
-    partition_path = sys.argv[1]
-    create_csv(partition_path)
