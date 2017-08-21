@@ -26,7 +26,7 @@ def create_csv(rootdir):
 
             if os.path.basename(dirpath) in parent_classes:
                 images = list_files(dirpath)
-                for image in images:
+                for image in sorted(images):
                         filename = os.path.join(dirpath, image)
                         # Not write '.DS_Store' file as img
                         if '.DS_Store' not in filename:
