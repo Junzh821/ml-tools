@@ -1,13 +1,10 @@
 Tools for common machine learning tasks with Keras.
 
-[![Build Status](https://travis-ci.org/triagemd/ml-tools.svg?branch=master)](https://travis-ci.org/triagemd/ml-tools)
+[![Build Status](https://travis-ci.org/triagemd/ml-tools.svg?branch=master)](https://travis-ci.org/triagemd/ml-tools) [![PyPI version](https://badge.fury.io/py/ml-tools.svg)](https://badge.fury.io/py/ml-tools)
 
 # Getting started
 
-## Mac
-
- - Install Python 3
- - `script/setup`
+`pip install --upgrade ml-tools`
 
 
 # Testing
