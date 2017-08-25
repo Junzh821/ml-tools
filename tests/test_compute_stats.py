@@ -2,31 +2,13 @@ from ml_tools import compute_dataset_stats as cds
 import os
 from keras.preprocessing import image
 import pytest
-import tarfile
-from backports.tempfile import TemporaryDirectory
 import numpy as np
 
 
-@pytest.fixture(scope='function')
-def dataset_path():
-    tar = tarfile.open('tests/fixtures/files/dataset_test.tar.gz', "r:gz")
-    with TemporaryDirectory() as temp_dir:
-        for member in tar.getmembers():
-            f = tar.extractfile(member)
-            if f is not None:
-                output_path = os.path.join(temp_dir, member.name)
-                if not os.path.exists(os.path.dirname(output_path)):
-                    os.makedirs(os.path.dirname(output_path))
-
-                with open(output_path, 'wb') as output_file:
-                    output_file.write(f.read())
-        yield temp_dir
-
-
 # Test to see if returns the correct number of total images
-def test_n_images_total(dataset_path):
+def test_n_images_total(sample_dataset_dir):
     n_images_train = 18
-    data_path = os.path.join(dataset_path, 'Training')
+    data_path = os.path.join(sample_dataset_dir, 'Training')
 
     # From Path
     n_total_images = cds.compute_n_images(data_path)
@@ -47,8 +29,8 @@ def test_n_images_total(dataset_path):
 
 
 # Test to see if mean and std have 3 components (BGR) / They are np.float64 values
-def test_compute_mean(dataset_path):
-    data_path = os.path.join(dataset_path, 'Training')
+def test_compute_mean(sample_dataset_dir):
+    data_path = os.path.join(sample_dataset_dir, 'Training')
     n_components = 3
 
     mean, std = cds.compute_mean_std(data_path, target_size=(100, 100), batch_size=10)
@@ -76,8 +58,8 @@ def test_compute_mean(dataset_path):
 
 
 # Test to check if it is returning the correct number of classes and that the numbers are ints
-def test_compute_class_histogram(dataset_path):
-    data_path = os.path.join(dataset_path, 'Training')
+def test_compute_class_histogram(sample_dataset_dir):
+    data_path = os.path.join(sample_dataset_dir, 'Training')
     n_classes = 2
 
     class_hist = cds.create_class_histogram(data_path)
@@ -104,8 +86,8 @@ def test_compute_class_histogram(dataset_path):
 
 
 # Test to see if mean and std have 3 components (BGR) / They are np.float64 values , class hist and n_total_img work
-def test_compute_stats(dataset_path):
-    data_path = os.path.join(dataset_path, 'Training')
+def test_compute_stats(sample_dataset_dir):
+    data_path = os.path.join(sample_dataset_dir, 'Training')
     n_components = 3
     n_classes = 2
     n_images_train = 18

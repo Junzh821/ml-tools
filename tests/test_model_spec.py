@@ -8,7 +8,7 @@ def assert_valid_model_spec(model_spec_name):
     assert len(spec.target_size) == 3
     assert spec.klass is not None
     assert callable(spec.preprocess_input)
-    image_data = spec.load_image('tests/fixtures/files/cat.jpg')
+    image_data = spec.load_image('tests/files/cat.jpg')
     assert image_data.any()
 
 
