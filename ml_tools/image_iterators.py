@@ -25,6 +25,8 @@ class MultiDirectoryIterator(object):
     def __init__(self, iterators):
         self.iterators = iterators
         self.samples = iterators[0].samples
+        self.batch_size = iterators[0].batch_size
+        self.target_sizes = [it.target_size for it in iterators]
         self.lock = threading.Lock()
 
     def next(self):
