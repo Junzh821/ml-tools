@@ -19,7 +19,7 @@ def temp_file():
 
 
 @pytest.fixture(scope='session')
-def dataset_path():
+def sample_dataset_dir():
     tar = tarfile.open('tests/files/dataset_test.tar.gz', "r:gz")
     with TemporaryDirectory() as temp_dir:
         for member in tar.getmembers():

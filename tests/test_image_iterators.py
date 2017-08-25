@@ -14,10 +14,10 @@ from keras.layers.merge import concatenate
 from keras.applications.mobilenet import MobileNet
 
 
-def test_multi_directory_iterator(dataset_path):
+def test_multi_directory_iterator(sample_dataset_dir):
   batch_size = 4
-  train_path = os.path.join(dataset_path, 'Training')
-  val_path = os.path.join(dataset_path, 'Validation')
+  train_path = os.path.join(sample_dataset_dir, 'Training')
+  val_path = os.path.join(sample_dataset_dir, 'Validation')
 
   # set up training and validation generators
   def make_dir_iterator(path):
