@@ -2,25 +2,7 @@ from ml_tools import compute_dataset_stats as cds
 import os
 from keras.preprocessing import image
 import pytest
-import tarfile
-from backports.tempfile import TemporaryDirectory
 import numpy as np
-
-
-@pytest.fixture(scope='function')
-def dataset_path():
-    tar = tarfile.open('tests/fixtures/files/dataset_test.tar.gz', "r:gz")
-    with TemporaryDirectory() as temp_dir:
-        for member in tar.getmembers():
-            f = tar.extractfile(member)
-            if f is not None:
-                output_path = os.path.join(temp_dir, member.name)
-                if not os.path.exists(os.path.dirname(output_path)):
-                    os.makedirs(os.path.dirname(output_path))
-
-                with open(output_path, 'wb') as output_file:
-                    output_file.write(f.read())
-        yield temp_dir
 
 
 # Test to see if returns the correct number of total images

@@ -2,6 +2,8 @@ import pytest
 
 from tempfile import NamedTemporaryFile
 from backports.tempfile import TemporaryDirectory
+import tarfile
+import os
 
 
 @pytest.fixture(scope='function')
@@ -14,3 +16,19 @@ def temp_dir():
 def temp_file():
     with NamedTemporaryFile() as f:
         yield f.name
+
+
+@pytest.fixture(scope='session')
+def dataset_path():
+    tar = tarfile.open('tests/files/dataset_test.tar.gz', "r:gz")
+    with TemporaryDirectory() as temp_dir:
+        for member in tar.getmembers():
+            f = tar.extractfile(member)
+            if f is not None:
+                output_path = os.path.join(temp_dir, member.name)
+                if not os.path.exists(os.path.dirname(output_path)):
+                    os.makedirs(os.path.dirname(output_path))
+
+                with open(output_path, 'wb') as output_file:
+                    output_file.write(f.read())
+        yield temp_dir
