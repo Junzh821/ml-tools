@@ -14,7 +14,10 @@ from keras.layers.merge import concatenate
 from keras.applications.mobilenet import MobileNet
 
 
-def test_multi_directory_iterator(sample_dataset_dir):
+# since training is done on multiple threads, without a lock, the iterators in MultiDirectoryIterator get out of sync
+# the number of images is not a multiple of batch_size, so therefore the iterators would present blocks not of the same shape which is not allowed
+# this test is that a shape mismatch error doesn't get thrown during training (that would indicate the race condition)
+def test_multi_directory_iterator_race_condition(sample_dataset_dir):
   batch_size = 4
   train_path = os.path.join(sample_dataset_dir, 'Training')
   val_path = os.path.join(sample_dataset_dir, 'Validation')
@@ -49,3 +52,5 @@ def test_multi_directory_iterator(sample_dataset_dir):
   model.fit_generator(train_gen, validation_data=val_gen, epochs=4, workers=16,
                       steps_per_epoch=int(np.ceil(train_gen.samples / batch_size)),
                       validation_steps=int(np.ceil(val_gen.samples / batch_size)))
+
+  # intentionally no assert, test passes if nothing throws
