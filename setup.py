@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ml-tools',
-    version='0.0.14',
+    version='0.0.15',
     description='Tools for common machine learning tasks using Tensorflow and Keras.',
     author='Triage Technologies Inc.',
     author_email='ai@triage.com',
@@ -15,6 +15,7 @@ setup(
     ],
     install_requires=[
         'Keras',
-        'Pillow'
+        'Pillow',
+        'keras-model-specs'
     ]
 )

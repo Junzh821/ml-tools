@@ -1,7 +1,6 @@
 from ml_tools import compute_dataset_stats as cds
 import os
 from keras.preprocessing import image
-import pytest
 import numpy as np
 
 

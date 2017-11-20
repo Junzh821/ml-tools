@@ -1,7 +1,7 @@
 import os
 
-from ml_tools import load_image, get_model_spec, list_files
-from ml_tools.model_spec import MODEL_SPECS
+from ml_tools import load_image, list_files
+from keras_model_specs.model_spec import between_plus_minus_1
 
 
 def touch(path):
@@ -10,12 +10,10 @@ def touch(path):
 
 
 def test_load_image():
-    for spec_name in MODEL_SPECS.keys():
-        model_spec = get_model_spec(spec_name)
-        image_data = load_image('tests/files/cat.jpg',
-                                model_spec.target_size,
-                                preprocess_input=model_spec.preprocess_input)
-        assert image_data.any()
+    image_data = load_image('tests/files/cat.jpg',
+                            [299, 299, 3],
+                            preprocess_input=between_plus_minus_1)
+    assert image_data.any()
 
 
 def test_list_files(temp_dir):
